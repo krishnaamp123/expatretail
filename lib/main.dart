@@ -51,7 +51,7 @@ class _CheckAuthState extends State<CheckAuth> {
     if (isAuth) {
       // Berdasarkan peran (role) pengguna, tentukan halaman yang akan ditampilkan
       if (roles == '"customers"') {
-        child = const Navigation();
+        child = const NavigationPage();
         // } else if (roles == '"sales"') {
         //   child = StartSales();
       } else {

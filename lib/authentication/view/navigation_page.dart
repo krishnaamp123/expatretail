@@ -1,15 +1,15 @@
 import 'package:expatretail/core.dart';
 import 'package:flutter/material.dart';
 
-class Navigation extends StatefulWidget {
+class NavigationPage extends StatefulWidget {
   // final String service_user;
-  const Navigation({super.key});
+  const NavigationPage({super.key});
 
   @override
-  State<Navigation> createState() => _NavigationState();
+  State<NavigationPage> createState() => _NavigationPageState();
 }
 
-class _NavigationState extends State<Navigation> {
+class _NavigationPageState extends State<NavigationPage> {
   final items = const [
     Icon(
       Icons.home_filled,
@@ -17,12 +17,7 @@ class _NavigationState extends State<Navigation> {
       size: 30,
     ),
     Icon(
-      Icons.payment,
-      color: Colors.white,
-      size: 30,
-    ),
-    Icon(
-      Icons.history_rounded,
+      Icons.coffee,
       color: Colors.white,
       size: 30,
     ),
@@ -33,7 +28,7 @@ class _NavigationState extends State<Navigation> {
     ),
   ];
 
-  int index = 1;
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +41,9 @@ class _NavigationState extends State<Navigation> {
             index = selectedIndex;
           });
         },
-        color: const Color.fromRGBO(45, 3, 59, 1),
-        backgroundColor: Colors.white,
-        buttonBackgroundColor: const Color.fromRGBO(45, 3, 59, 1),
+        color: const Color.fromRGBO(26, 26, 26, 1),
+        backgroundColor: Colors.black,
+        buttonBackgroundColor: const Color.fromRGBO(26, 26, 26, 1),
         height: 60,
       ),
       body: Container(
