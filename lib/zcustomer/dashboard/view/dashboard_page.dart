@@ -1,8 +1,4 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:expatretail/core.dart'; // Sesuaikan impor
 
 class DashboardPage extends StatefulWidget {
@@ -37,6 +33,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: buildAppBarLogo(context),
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -48,34 +45,6 @@ class _DashboardPageState extends State<DashboardPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: Center(
-                        child: Image.asset(
-                          'lib/image/expatlogo.png',
-                          height: 60,
-                          width: 60,
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        _showLogoutConfirmationDialog(context);
-                      },
-                      child: const Icon(
-                        Icons.logout_outlined,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                  ],
-                ),
-                const SizedBox(height: 20),
-
                 // Nama
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -266,47 +235,4 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     );
   }
-}
-
-Future<void> _showLogoutConfirmationDialog(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Konfirmasi'),
-        content: const Text('Anda yakin ingin logout?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Tutup dialog tanpa logout
-            },
-            child: const Text('Batal'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Tutup dialog sebelum logout
-              logout(context); // Panggil fungsi logout
-            },
-            child: const Text('Logout'),
-          ),
-        ],
-      );
-    },
-  );
-}
-
-Future<void> logout(BuildContext context) async {
-  SharedPreferences localStorage = await SharedPreferences.getInstance();
-  localStorage.remove('token');
-  localStorage.remove('user');
-  print('Token setelah logout: ${localStorage.getString('token')}');
-  print('User setelah logout: ${localStorage.getString('user')}');
-
-  // Navigasi ke halaman login atau halaman awal aplikasi setelah logout
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const LoginPage(),
-    ),
-  );
 }

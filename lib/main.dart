@@ -1,4 +1,3 @@
-import 'package:expatretail/landing/view/landing_page.dart';
 import 'package:expatretail/core.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: CheckAuth(),
-      theme: ThemeData(primarySwatch: Colors.purple),
+      theme: ThemeData(primarySwatch: Colors.grey),
     );
   }
 }
