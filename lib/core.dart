@@ -37,6 +37,10 @@ export 'package:expatretail/zcustomer/menu/view/menu_page.dart';
 export 'package:expatretail/zcustomer/menu/view/menudetail_page.dart';
 export 'package:expatretail/zcustomer/menu/view/itemholder_page.dart';
 
+//CART PAGE
+export 'package:expatretail/zcustomer/keranjang/view/keranjang_page.dart';
+export 'package:expatretail/zcustomer/keranjang/view/keranjangholder_page.dart';
+
 //PROFILE PAGE
 export 'package:expatretail/zcustomer/profile/view/profile_page.dart';
 

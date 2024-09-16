@@ -36,21 +36,36 @@ Future<void> _showLogoutConfirmationDialog(BuildContext context) async {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Konfirmasi'),
-        content: const Text('Anda yakin ingin logout?'),
+        backgroundColor: Colors.black,
+        title: const Text(
+          "Confirmation",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          "Are you sure you want to logout?",
+          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
+        ),
         actions: <Widget>[
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(); // Tutup dialog tanpa logout
             },
-            child: const Text('Batal'),
+            child: const Text(
+              "Cancel",
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Tutup dialog sebelum logout
-              logout(context); // Panggil fungsi logout
+              Navigator.of(context).pop();
+              logout(context);
             },
-            child: const Text('Logout'),
+            child: const Text(
+              "Logout",
+              style: TextStyle(
+                color: Color.fromRGBO(114, 162, 138, 1),
+              ),
+            ),
           ),
         ],
       );

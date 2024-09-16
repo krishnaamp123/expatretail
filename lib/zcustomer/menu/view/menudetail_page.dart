@@ -105,81 +105,64 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                 ),
               ),
               const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InputQty.int(
-                      decoration: const QtyDecorationProps(
-                        isBordered: false,
-                        borderShape: BorderShapeBtn.circle,
-                        width: 12,
-                        btnColor: Color.fromRGBO(114, 162, 138, 1),
-                      ),
-                      // initVal: jumlahKaryawan,
-                      minVal: 1,
-                      maxVal: 50,
-                      steps: 1,
-                      onQtyChanged: (value) {
-                        setState(() {
-                          // jumlahKaryawan = value ?? 1;
-                        });
-                      },
-                      messageBuilder: (minVal, maxVal, value) {
-                        if (value == null || value == 0) {
-                          return const Text(
-                            "Minimal 1",
-                            style: TextStyle(color: Colors.red),
-                            textAlign: TextAlign.center,
-                          );
-                        } else if (value > 30) {
-                          return const Text(
-                            "Maksimal 30",
-                            style: TextStyle(color: Colors.red),
-                            textAlign: TextAlign.center,
-                          );
-                        } else {
-                          return const SizedBox();
-                          // Text(
-                          //   "Jumlah : $value",
-                          //   style: const TextStyle(
-                          //     color: Colors.white,
-                          //   ),
-                          //   textAlign: TextAlign.center,
-                          // );
-                        }
-                      },
-                    ),
-                    GestureDetector(
-                      // onTap: {},
-                      child: Container(
-                        width: 200,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(114, 162, 138, 1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Add To Cart',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                    // ButtonWidget(
-                    //   text: "Add To Cart",
-                    //   onTap: () {},
-                    // ),
-                  ],
-                ),
-              ),
             ]),
+          ),
+        ),
+      ),
+      bottomSheet: Container(
+        color: Colors.black,
+        height: 45,
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InputQty.int(
+                qtyFormProps: const QtyFormProps(
+                  enableTyping: false,
+                  style: TextStyle(
+                    color: Color.fromRGBO(114, 162, 138, 1),
+                  ),
+                ),
+                decoration: const QtyDecorationProps(
+                  isBordered: false,
+                  borderShape: BorderShapeBtn.circle,
+                  width: 12,
+                  btnColor: Color.fromRGBO(114, 162, 138, 1),
+                ),
+                // initVal: jumlahKaryawan,
+                minVal: 1,
+                maxVal: 50,
+                steps: 1,
+                onQtyChanged: (value) {
+                  setState(() {
+                    // jumlahKaryawan = value ?? 1;
+                  });
+                },
+              ),
+              GestureDetector(
+                // onTap: {},
+                child: Container(
+                  width: 200,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(114, 162, 138, 1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Add To Cart',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),

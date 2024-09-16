@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:expatretail/core.dart';
 
 AppBar buildAppBarCart(BuildContext context, String title) {
   return AppBar(
@@ -36,7 +37,12 @@ AppBar buildAppBarCart(BuildContext context, String title) {
             color: Colors.white,
           ),
           onPressed: () {
-            // Handle cart icon press
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const KeranjangPage(),
+              ),
+            );
           },
         ),
       ),

@@ -63,7 +63,7 @@ class _MenuPageState extends State<MenuPage> {
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               const ItemHolderPage(),
 
               //Item Holder
