@@ -33,7 +33,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBarLogo(context),
+      // appBar: buildAppBarLogo(context),
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.black,
       body: SafeArea(

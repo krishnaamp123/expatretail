@@ -142,7 +142,9 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                 },
               ),
               GestureDetector(
-                // onTap: {},
+                onTap: () {
+                  _showConfirmationDialog();
+                },
                 child: Container(
                   width: 200,
                   padding: const EdgeInsets.all(10),
@@ -152,7 +154,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                   ),
                   child: const Center(
                     child: Text(
-                      'Add To Cart',
+                      'ADD TO CART',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -166,6 +168,83 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.black,
+          title: const Text(
+            "Confirm Cart",
+            style: TextStyle(
+              color: Color.fromRGBO(114, 162, 138, 1),
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Are you sure you want to add this item to your cart?",
+                style: TextStyle(
+                    color: Colors.grey, fontWeight: FontWeight.normal),
+                maxLines: 3,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Radius tombol
+                    ),
+                    backgroundColor: const Color.fromRGBO(33, 33, 33, 1),
+                  ),
+                  child: const Text(
+                    "Cancel",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0,
+                    ), // Ukuran teks diperkecil
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Radius tombol
+                    ),
+                    backgroundColor: const Color.fromRGBO(114, 162, 138, 1),
+                  ),
+                  child: const Text(
+                    "Confirm",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0,
+                    ), // Ukuran teks diperkecil
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

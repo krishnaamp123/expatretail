@@ -42,6 +42,9 @@ dependencies:
   get: ^4.6.6
   intl: ^0.19.0
   input_quantity: ^2.4.1
+  image_picker: ^1.0.4
+  path_provider: ^2.1.4
+  path: ^1.9.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -50,6 +53,16 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/image/logokotak.png"
+  adaptive_icon_background: "#000000"
+  icon_size: 140
+  min_sdk_android: 21 
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

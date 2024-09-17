@@ -12,12 +12,12 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   final items = const [
     Icon(
-      Icons.home_filled,
+      Icons.shopping_cart,
       color: Colors.white,
       size: 30,
     ),
     Icon(
-      Icons.coffee,
+      Icons.report,
       color: Colors.white,
       size: 30,
     ),
@@ -56,16 +56,16 @@ class _NavigationPageState extends State<NavigationPage> {
     Widget widget;
     switch (index) {
       case 0:
-        widget = const DashboardPage();
+        widget = const MenuPage();
         break;
       case 1:
-        widget = const MenuPage();
+        widget = const ComplaintPage();
         break;
       case 2:
         widget = const ProfilePage();
         break;
       default:
-        widget = const DashboardPage();
+        widget = const MenuPage();
         break;
     }
     return widget;

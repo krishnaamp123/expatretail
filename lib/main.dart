@@ -2,11 +2,11 @@ import 'package:expatretail/core.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyExpatApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyExpatApp extends StatelessWidget {
+  const MyExpatApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,6 @@ class MyApp extends StatelessWidget {
       home: CheckAuth(),
       theme: ThemeData(
         primarySwatch: Colors.grey,
-        primaryColor: const Color.fromRGBO(114, 162, 138, 1),
       ),
     );
   }

@@ -136,7 +136,7 @@ class _LandingPageState extends State<LandingPage> {
         child: const Text(
           "Get Started",
           style: TextStyle(
-            color: const Color.fromRGBO(114, 162, 138, 1),
+            color: Color.fromRGBO(114, 162, 138, 1),
           ),
         ),
       ),
