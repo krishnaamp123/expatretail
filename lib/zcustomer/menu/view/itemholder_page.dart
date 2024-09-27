@@ -1,226 +1,39 @@
-// import 'package:flutter/material.dart';
-// import 'package:expatretail/core.dart';
-
-// class ItemHolderPage extends StatefulWidget {
-//   final TextEditingController alamatController;
-//   final TextEditingController namapesananController;
-//   final GlobalKey<FormState> formKey;
-
-//   const ItemHolderPage({
-//     super.key,
-//     required this.alamatController,
-//     required this.namapesananController,
-//     required this.formKey,
-//   });
-
-//   @override
-//   State<ItemHolderPage> createState() => _PackageListState();
-// }
-
-// class _PackageListState extends State<ItemHolderPage> {
-//   var paketCon = Get.put(PaketController());
-//   bool isDataLoaded = false;
-
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     _refreshData();
-//     _loadData();
-//   }
-
-//   // Fungsi untuk memuat data
-//   void _loadData() async {
-//     await paketCon.getPaket();
-//     setState(() {
-//       isDataLoaded = true;
-//     });
-//   }
-
-//   // Function to handle refreshing
-//   Future<void> _refreshData() async {
-//     await paketCon.getPaket();
-//     setState(() {});
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return RefreshIndicator(
-//       onRefresh: _refreshData,
-//       child: isDataLoaded
-//           ? SizedBox(
-//               height: 320,
-//               width: MediaQuery.of(context).size.width,
-//               child: Obx(
-//                 () => paketCon.isLoading.value
-//                     ? const SpinKitWanderingCubes(
-//                         color: Colors.deepPurple,
-//                         size: 50.0,
-//                       )
-//                     : ListView.builder(
-//                         shrinkWrap: true,
-//                         itemCount: paketCon.listPaket.length,
-//                         padding: const EdgeInsets.only(bottom: 10),
-//                         itemExtent: 100,
-//                         itemBuilder: (BuildContext context, int index) {
-//                           var paket = paketCon.listPaket[index];
-//                           return paketCard(
-//                               paket.id.toString(),
-//                               paket.packageName.toString(),
-//                               paket.mainImage.toString(),
-//                               paket.description.toString(),
-//                               paket.itemPrice.toString()
-//                         },
-//                       ),
-//               ),
-//             )
-//           : const Center(
-//               child: SpinKitWanderingCubes(
-//               color: Colors.deepPurple,
-//               size: 50.0,
-//             ) // Tampilkan loading indicator jika data masih dimuat
-//               ),
-//     );
-//   }
-
-//   Widget paketCard(
-//       String idpaket,
-//       String name,
-//       String image,
-//       String description,
-//       String itemprice,) {
-//     int hargaInt = int.parse(itemprice);
-//     String formatteditemprice =
-//         NumberFormat.currency(locale: 'id', symbol: 'Rp.', decimalDigits: 0)
-//             .format(hargaInt);
-//     final imageURL = '$baseURL/resource/packages/$idpaket/main_image/';
-//     print('Image URL: $imageURL');
-//     return InkWell(
-//       onTap: () {
-//             Navigator.push(
-//               context,
-//               MaterialPageRoute(
-//                 builder: (context) => PaketLayanan(
-//                   idpaket: idpaket,
-//                   image: image,
-//                   name: name,
-//                   description: description,
-//                   itemprice: itemprice,
-//                 ),
-//               ),
-//             );
-//       },
-//       child: Card(
-//         color: Colors.white,
-//         elevation: 2,
-//         shape: RoundedRectangleBorder(
-//           borderRadius: BorderRadius.circular(20),
-//         ),
-//         child: SizedBox(
-//           height: 100,
-//           width: double.infinity,
-//           child: Row(
-//             children: [
-//               const SizedBox(
-//                 width: 15,
-//               ),
-//               CircleAvatar(
-//                 radius: 30,
-//                 backgroundImage: NetworkImage(
-//                   imageURL,
-//                 ),
-//                 onBackgroundImageError: (error, stackTrace) {
-//                   print('Error loading image: $error');
-//                 },
-//                 backgroundColor: const Color.fromRGBO(193, 71, 233, 1),
-//               ),
-//               const SizedBox(
-//                 width: 15,
-//               ),
-//               Expanded(
-//                 child: Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Text(
-//                       name,
-//                       style: const TextStyle(
-//                         fontSize: 18,
-//                         color: Color.fromRGBO(45, 3, 59, 1),
-//                         fontWeight: FontWeight.bold,
-//                         letterSpacing: 0,
-//                       ),
-//                       textAlign: TextAlign.left,
-//                       maxLines: 1,
-//                       overflow: TextOverflow.ellipsis,
-//                     ),
-//                     TextWidget(
-//                       formatteditemprice,
-//                       15,
-//                       const Color.fromRGBO(193, 71, 233, 1),
-//                       FontWeight.normal,
-//                       letterSpace: 0,
-//                       textAlign: TextAlign.left,
-//                     ),
-//                     Text(
-//                       description,
-//                       style: TextStyle(
-//                         fontSize: 15,
-//                         color: Colors.black.withOpacity(.6),
-//                         fontWeight: FontWeight.bold,
-//                       ),
-//                       textAlign: TextAlign.left,
-//                       maxLines: 1,
-//                       overflow: TextOverflow.ellipsis,
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
 class ItemHolderPage extends StatefulWidget {
-  const ItemHolderPage({super.key});
+  const ItemHolderPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<ItemHolderPage> createState() => _PackageListState();
+  State<ItemHolderPage> createState() => _ItemHolderPageState();
 }
 
-class _PackageListState extends State<ItemHolderPage> {
-  bool isDataLoaded = true; // Set true karena data dummy langsung tersedia
+class _ItemHolderPageState extends State<ItemHolderPage> {
+  var menuCon = Get.put(MenuItemController());
+  bool isDataLoaded = false;
 
-  // Data dummy untuk digunakan
-  final List<Map<String, String>> dummyData = [
-    {
-      'idpaket': '1',
-      'name': 'Nomad',
-      'image': 'lib/image/produk1.png',
-      'description': 'Description1',
-      'itemprice': '150000'
-    },
-    {
-      'idpaket': '2',
-      'name': 'Patria',
-      'image': 'lib/image/produk2.png',
-      'description': 'Description2',
-      'itemprice': '250000'
-    },
-    {
-      'idpaket': '3',
-      'name': 'Habitat',
-      'image': 'lib/image/produk3.png',
-      'description': 'Description3',
-      'itemprice': '450000'
-    }
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  // Fungsi untuk memuat data
+  void _loadData() async {
+    await _refreshData();
+    await menuCon.getMenu();
+    setState(() {
+      isDataLoaded = true;
+    });
+  }
+
+  // Function to handle refreshing
+  Future<void> _refreshData() async {
+    await menuCon.getMenu();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -237,21 +50,31 @@ class _PackageListState extends State<ItemHolderPage> {
                 child: SizedBox(
                   height: 700,
                   width: MediaQuery.of(context).size.width,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: dummyData.length,
-                    padding: const EdgeInsets.only(bottom: 10),
-                    itemExtent: 130,
-                    itemBuilder: (BuildContext context, int index) {
-                      var paket = dummyData[index];
-                      return paketCard(
-                        paket['idpaket']!,
-                        paket['name']!,
-                        paket['image']!,
-                        paket['description']!,
-                        paket['itemprice']!,
-                      );
-                    },
+                  child: Obx(
+                    () => menuCon.isLoading.value
+                        ? const SpinKitWanderingCubes(
+                            color: Color.fromRGBO(114, 162, 138, 1),
+                            size: 50.0,
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: menuCon.listMenu.length,
+                            padding: const EdgeInsets.only(bottom: 10),
+                            itemExtent: 130,
+                            itemBuilder: (BuildContext context, int index) {
+                              var menu = menuCon.listMenu[index];
+                              return paketCard(
+                                menu.id!.toInt(),
+                                menu.price!.toInt(),
+                                menu.product!.productName.toString(),
+                                menu.product!.image.toString(),
+                                menu.product!.descriprtion.toString(),
+                                menu.product!.packaging!.packagingName
+                                    .toString(),
+                                menu.product!.packaging!.weight!.toInt(),
+                              );
+                            },
+                          ),
                   ),
                 ),
               ),
@@ -265,18 +88,21 @@ class _PackageListState extends State<ItemHolderPage> {
   }
 
   Widget paketCard(
-    String idpaket,
-    String name,
+    int id,
+    int price,
+    String productname,
     String image,
     String description,
-    String itemprice,
+    String packagingname,
+    int weight,
   ) {
-    int hargaInt = int.parse(itemprice);
     String formatteditemprice = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp.',
       decimalDigits: 0,
-    ).format(hargaInt);
+    ).format(price);
+
+    final fullImageUrl = '$baseURL/storage/image/$image';
 
     return InkWell(
       onTap: () {
@@ -284,11 +110,13 @@ class _PackageListState extends State<ItemHolderPage> {
           context,
           MaterialPageRoute(
             builder: (context) => MenuDetailPage(
-              idpaket: idpaket,
+              id: id,
+              price: price,
+              productname: productname,
               image: image,
-              name: name,
               description: description,
-              itemprice: itemprice,
+              packagingname: packagingname,
+              weight: weight,
             ),
           ),
         );
@@ -309,8 +137,20 @@ class _PackageListState extends State<ItemHolderPage> {
                   const SizedBox(width: 15),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      image,
+                    child: Image.network(
+                      fullImageUrl,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'lib/image/logokotak.png',
+                          fit: BoxFit.cover,
+                          height: 100,
+                          width: 100,
+                        );
+                      },
+                      loadingBuilder: (context, child, progress) {
+                        if (progress == null) return child;
+                        return const CircularProgressIndicator();
+                      },
                       height: 100,
                       width: 100,
                       fit: BoxFit.cover,
@@ -323,7 +163,7 @@ class _PackageListState extends State<ItemHolderPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          name,
+                          productname,
                           style: const TextStyle(
                             fontSize: 20,
                             color: Colors.white,
@@ -369,11 +209,13 @@ class _PackageListState extends State<ItemHolderPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => MenuDetailPage(
-                                      idpaket: idpaket,
+                                      id: id,
+                                      price: price,
+                                      productname: productname,
                                       image: image,
-                                      name: name,
                                       description: description,
-                                      itemprice: itemprice,
+                                      packagingname: packagingname,
+                                      weight: weight,
                                     ),
                                   ),
                                 );

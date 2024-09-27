@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
 class MenuDetailPage extends StatefulWidget {
-  final String idpaket;
+  final int id;
+  final int price;
+  final String productname;
   final String image;
-  final String name;
   final String description;
-  final String itemprice;
+  final String packagingname;
+  final int weight;
 
   const MenuDetailPage(
       {Key? key,
-      required this.idpaket,
+      required this.id,
+      required this.price,
+      required this.productname,
       required this.image,
-      required this.name,
       required this.description,
-      required this.itemprice})
+      required this.packagingname,
+      required this.weight})
       : super(key: key);
 
   @override
@@ -29,11 +33,12 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    String itemprice = widget.itemprice;
-    int productprice = int.parse(itemprice);
+    int itemprice = widget.price;
     String formattedItemPrice =
         NumberFormat.currency(locale: 'id', symbol: 'Rp.', decimalDigits: 0)
-            .format(productprice);
+            .format(itemprice);
+    String image = widget.image;
+    final imageURL = '$baseURL/storage/image/$image';
     return Scaffold(
       appBar: buildAppBar(context, "MENU DETAIL"),
       backgroundColor: Colors.black,
@@ -46,11 +51,19 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
             child: Column(children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  widget.image,
+                child: Image.network(
+                  imageURL,
                   height: 300,
                   width: MediaQuery.of(context).size.width,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'lib/image/logokotak.png',
+                      fit: BoxFit.cover,
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 10),
@@ -60,7 +73,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      widget.name,
+                      widget.productname,
                       style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,

@@ -75,8 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                   upText: 'Email Address',
                   hintText: 'Enter your email address',
                   obscureText: false,
-                  validator: loginController
-                      .validateEmail, // Set validator dari controller
+                  validator: loginController.validateEmail,
                   onChanged: (_) {
                     setState(() {
                       loginController.emailError = null;
@@ -91,8 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: loginController.passwordController,
                   upText: 'Password',
                   hintText: 'Enter your password',
-                  validator: loginController
-                      .validatePassword, // Set validator dari controller
+                  validator: loginController.validatePassword,
                   onChanged: (_) {
                     setState(() {
                       loginController.passwordError = null;
@@ -107,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                   text: "Sign In",
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
-                      loginController.navigateToLogin(context);
+                      loginController.handleLogin(context);
                     }
                   },
                 ),

@@ -1,20 +1,27 @@
-// import 'package:get/get.dart';
-// import 'package:expatretail/core.dart';
+import 'dart:convert';
 
-// class MenuController extends GetxController implements GetxService {
-//   var listPaket = <PaketModel>[].obs;
-//   final paket = PaketService();
-//   var isLoading = false.obs;
+import 'package:expatretail/core.dart';
 
-//   Future<void> getPaket() async {
-//     isLoading.value = true;
-//     var response = await paket.getPaket();
-//     var responsedecode = jsonDecode(response.body);
-//     listPaket.clear();
-//     for (var i = 0; i < responsedecode['datas'].length; i++) {
-//       PaketModel data = PaketModel.fromJson(responsedecode['datas'][i]);
-//       listPaket.add(data);
-//     }
-//     isLoading.value = false;
-//   }
-// }
+class MenuItemController extends GetxController implements GetxService {
+  var listMenu = <CustomerProductModel>[].obs;
+  final menu = CustomerProductService();
+  var isLoading = false.obs;
+
+  Future<void> getMenu() async {
+    isLoading.value = true;
+    var response = await menu.getCustomerProduct();
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    var responsedecode = jsonDecode(response.body);
+    listMenu.clear();
+    for (var i = 0; i < responsedecode['data'].length; i++) {
+      CustomerProductModel data =
+          CustomerProductModel.fromJson(responsedecode['data'][i]);
+      listMenu.add(data);
+    }
+
+    isLoading.value = false;
+  }
+}

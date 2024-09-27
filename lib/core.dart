@@ -18,6 +18,7 @@ export 'package:image_picker/image_picker.dart';
 export 'package:path_provider/path_provider.dart';
 
 //OTHER
+export 'package:expatretail/global.dart';
 export 'package:expatretail/components/color.dart';
 export 'dart:async';
 
@@ -27,6 +28,8 @@ export 'package:expatretail/landing/data/landing_info.dart';
 export 'package:expatretail/landing/data/landing_items.dart';
 
 //AUTH PAGE
+export 'package:expatretail/service/token.dart';
+export 'package:expatretail/service/auth_service.dart';
 export 'package:expatretail/authentication/view/navigation_page.dart';
 export 'package:expatretail/authentication/view/login_page.dart';
 export 'package:expatretail/authentication/controller/login_controller.dart';
@@ -39,6 +42,9 @@ export 'package:expatretail/zcustomer/complaint/view/complaint_page.dart';
 export 'package:expatretail/zcustomer/complaint/controller/complaint_controller.dart';
 
 //MENU PAGE
+export 'package:expatretail/model/customerproduct_model.dart';
+export 'package:expatretail/service/customerproduct_service.dart';
+export 'package:expatretail/zcustomer/menu/controller/menu_controller.dart';
 export 'package:expatretail/zcustomer/menu/view/menu_page.dart';
 export 'package:expatretail/zcustomer/menu/view/menudetail_page.dart';
 export 'package:expatretail/zcustomer/menu/view/itemholder_page.dart';
