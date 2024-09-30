@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:expatretail/core.dart';
+export 'package:expatretail/model/customerproduct_model.dart';
 
 class MenuItemController extends GetxController implements GetxService {
   var listMenu = <CustomerProductModel>[].obs;

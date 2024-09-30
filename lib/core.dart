@@ -42,7 +42,6 @@ export 'package:expatretail/zcustomer/complaint/view/complaint_page.dart';
 export 'package:expatretail/zcustomer/complaint/controller/complaint_controller.dart';
 
 //MENU PAGE
-export 'package:expatretail/model/customerproduct_model.dart';
 export 'package:expatretail/service/customerproduct_service.dart';
 export 'package:expatretail/zcustomer/menu/controller/menu_controller.dart';
 export 'package:expatretail/zcustomer/menu/view/menu_page.dart';
@@ -54,6 +53,8 @@ export 'package:expatretail/zcustomer/keranjang/view/keranjang_page.dart';
 export 'package:expatretail/zcustomer/keranjang/view/keranjangholder_page.dart';
 
 //PROFILE PAGE
+export 'package:expatretail/service/profile_service.dart';
+export 'package:expatretail/zcustomer/profile/controller/profile_controller.dart';
 export 'package:expatretail/zcustomer/profile/view/profile_page.dart';
 
 //WIDGET
