@@ -64,24 +64,22 @@ class LoginController {
           print('userprofile: $user');
           navigateToDashboard(context);
         }
-      }
-    } else {
-      const snackBar = SnackBar(
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Info',
-          color: Color.fromRGBO(114, 162, 138, 1),
-          message:
-              'Harap periksa kembali email dan password, akun yang anda masukan belum terdaftar',
-          contentType: ContentType.failure,
-        ),
-      );
+      } else {
+        const snackBar = SnackBar(
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.transparent,
+          content: AwesomeSnackbarContent(
+            title: 'Failure!',
+            message: 'The entered account is not registered!',
+            contentType: ContentType.failure,
+          ),
+        );
 
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBar);
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(snackBar);
+      }
     }
   }
 
@@ -110,7 +108,7 @@ class LoginController {
       backgroundColor: Colors.transparent,
       content: AwesomeSnackbarContent(
         title: 'Success!',
-        message: 'Dashboard page will appear in a few moments',
+        message: 'Dashboard page will appear in a few moments!',
         color: Color.fromRGBO(114, 162, 138, 1),
         contentType: ContentType.success,
       ),

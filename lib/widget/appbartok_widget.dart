@@ -22,7 +22,7 @@ AppBar buildAppBarTok(BuildContext context, String title) {
     ),
     centerTitle: true,
     toolbarHeight: 80,
-    backgroundColor: Colors.transparent,
+    backgroundColor: Colors.black,
     elevation: 0,
   );
 }

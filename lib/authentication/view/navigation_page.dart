@@ -59,7 +59,7 @@ class _NavigationPageState extends State<NavigationPage> {
         widget = const MenuPage();
         break;
       case 1:
-        widget = const ComplaintPage();
+        widget = const ComplaintBarPage();
         break;
       case 2:
         widget = const ProfilePage();

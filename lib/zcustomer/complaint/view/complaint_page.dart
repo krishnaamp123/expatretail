@@ -1,7 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
-import 'package:path/path.dart' as path;
-
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as path;
 import 'package:expatretail/core.dart';
 
 class ComplaintPage extends StatefulWidget {
@@ -17,11 +17,28 @@ class _ComplaintPageState extends State<ComplaintPage> {
   final ComplaintController complaintController = ComplaintController();
   File? _profileImage;
   DateTime selectedDate = DateTime.now();
+  int? userid;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _loadIdData();
+  }
+
+  _loadIdData() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var idData = localStorage.getString('user');
+    if (idData != null) {
+      var id = jsonDecode(idData);
+      if (id != null && id['id'] is int) {
+        setState(() {
+          userid = id['id'];
+        });
+        print("idData from SharedPreferences: $userid");
+      } else {
+        print("ID bukan integer");
+      }
+    }
   }
 
   Future<void> _pickImage() async {
@@ -29,13 +46,22 @@ class _ComplaintPageState extends State<ComplaintPage> {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
 
+      // Memastikan ukuran file tidak terlalu besar
+      final bytes = await image.readAsBytes();
+      const maxSizeInBytes = 2 * 1024 * 1024; // Contoh batas ukuran 2MB
+      if (bytes.lengthInBytes > maxSizeInBytes) {
+        print('File terlalu besar. Ukuran file maksimal adalah 2MB.');
+        return;
+      }
+
+      // Jika ukuran file sesuai, lanjutkan proses
       final directory = await getApplicationDocumentsDirectory();
       final name = path.basename(image.path);
       final imageFile = File('${directory.path}/$name');
       final newImage = await File(image.path).copy(imageFile.path);
 
       setState(() {
-        _profileImage = newImage;
+        _profileImage = newImage; // Simpan gambar yang dipilih
       });
     } catch (e) {
       print('Error picking image: $e');
@@ -45,21 +71,19 @@ class _ComplaintPageState extends State<ComplaintPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBarTok(context, "COMPLAINT"),
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.black,
       body: Form(
         key: _formKey,
         child: Container(
           color: Colors.black,
-          // padding: const EdgeInsets.only(top: 60),
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //add photo
+                const SizedBox(height: 10),
                 Center(
                   child: Stack(
                     children: [
@@ -92,7 +116,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
                 ),
                 const SizedBox(height: 10),
 
-                //tanggal dan kode barang
+                // Tanggal dan kode barang
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 100),
                   child: Column(
@@ -106,15 +130,13 @@ class _ComplaintPageState extends State<ComplaintPage> {
                         FontWeight.normal,
                         letterSpace: 0,
                       ),
-                      const SizedBox(
-                        height: 5,
-                      ),
+                      const SizedBox(height: 5),
                       GestureDetector(
                         onTap: () async {
                           final DateTime? dateTime = await showDatePicker(
                             context: context,
                             initialDate: selectedDate,
-                            firstDate: DateTime.now(),
+                            firstDate: DateTime(2024),
                             lastDate: DateTime(2025),
                           );
                           if (dateTime != null) {
@@ -124,8 +146,8 @@ class _ComplaintPageState extends State<ComplaintPage> {
                           }
                         },
                         child: Container(
-                          padding: const EdgeInsets.only(
-                              left: 32, right: 32, top: 12, bottom: 12),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 32, vertical: 12),
                           decoration: BoxDecoration(
                             color: const Color.fromRGBO(114, 162, 138, 1),
                             borderRadius: BorderRadius.circular(10),
@@ -147,14 +169,13 @@ class _ComplaintPageState extends State<ComplaintPage> {
                 ),
                 const SizedBox(height: 20),
 
-                //production code textfield
+                // Production code textfield
                 TextFieldWidget(
                   controller: complaintController.kodeproduksiController,
                   upText: 'Production Code',
                   hintText: 'Enter your production code',
                   obscureText: false,
-                  validator: complaintController
-                      .validateKodeProduksi, // Set validator dari controller
+                  validator: complaintController.validateKodeProduksi,
                   onChanged: (_) {
                     setState(() {
                       complaintController.kodeproduksiError = null;
@@ -163,14 +184,13 @@ class _ComplaintPageState extends State<ComplaintPage> {
                 ),
                 const SizedBox(height: 10),
 
-                //complaint textfield
+                // Complaint textfield
                 TextFieldComplaint(
                   controller: complaintController.descriptionController,
                   upText: 'Complaint Description',
                   hintText: 'Enter your complaint',
                   obscureText: false,
-                  validator: complaintController
-                      .validateDescription, // Set validator dari controller
+                  validator: complaintController.validateDescription,
                   onChanged: (_) {
                     setState(() {
                       complaintController.descriptionError = null;
@@ -180,15 +200,23 @@ class _ComplaintPageState extends State<ComplaintPage> {
 
                 const SizedBox(height: 30),
 
-                //sign in button
+                // Send button
                 ButtonWidget(
                   text: "SEND",
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
+                      if (_profileImage == null) {
+                        print("Error: No image selected.");
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text(
+                                "Please select an image before submitting.")));
+                        return;
+                      }
                       _showConfirmationDialog();
                     }
                   },
                 ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -261,7 +289,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // Radius tombol
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     backgroundColor: const Color.fromRGBO(33, 33, 33, 1),
                   ),
@@ -272,14 +300,33 @@ class _ComplaintPageState extends State<ComplaintPage> {
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0,
-                    ), // Ukuran teks diperkecil
+                    ),
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    complaintController.sendComplaint(
+                        userid!, _profileImage!, selectedDate);
+                    const snackBar = SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'Success!',
+                        color: Color.fromRGBO(114, 162, 138, 1),
+                        message: 'Thank you, complaint successfully sent!',
+                        contentType: ContentType.success,
+                      ),
+                    );
+
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                    Navigator.of(context).pop();
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // Radius tombol
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     backgroundColor: const Color.fromRGBO(114, 162, 138, 1),
                   ),
@@ -290,7 +337,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0,
-                    ), // Ukuran teks diperkecil
+                    ),
                   ),
                 ),
               ],

@@ -16,6 +16,7 @@ export 'package:intl/intl.dart';
 export 'package:input_quantity/input_quantity.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:path_provider/path_provider.dart';
+export 'package:http_parser/http_parser.dart';
 
 //OTHER
 export 'package:expatretail/global.dart';
@@ -38,8 +39,11 @@ export 'package:expatretail/authentication/controller/login_controller.dart';
 export 'package:expatretail/zcustomer/dashboard/view/dashboard_page.dart';
 
 //COMPLAINT PAGE
-export 'package:expatretail/zcustomer/complaint/view/complaint_page.dart';
+export 'package:expatretail/service/complaint_service.dart';
 export 'package:expatretail/zcustomer/complaint/controller/complaint_controller.dart';
+export 'package:expatretail/zcustomer/complaint/view/complaint_page.dart';
+export 'package:expatretail/zcustomer/complaint/view/complaintbar_page.dart';
+export 'package:expatretail/zcustomer/complaint/view/complainthistory_page.dart';
 
 //MENU PAGE
 export 'package:expatretail/service/customerproduct_service.dart';
