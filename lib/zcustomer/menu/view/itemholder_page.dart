@@ -38,7 +38,7 @@ class _ItemHolderPageState extends State<ItemHolderPage> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async {}, // Tidak perlu refresh karena data dummy
+      onRefresh: () async {},
       child: isDataLoaded
           ? SingleChildScrollView(
               child: Card(
@@ -63,7 +63,7 @@ class _ItemHolderPageState extends State<ItemHolderPage> {
                             itemExtent: 130,
                             itemBuilder: (BuildContext context, int index) {
                               var menu = menuCon.listMenu[index];
-                              return paketCard(
+                              return menuCard(
                                 menu.id!.toInt(),
                                 menu.price!.toInt(),
                                 menu.product!.productName.toString(),
@@ -87,7 +87,7 @@ class _ItemHolderPageState extends State<ItemHolderPage> {
     );
   }
 
-  Widget paketCard(
+  Widget menuCard(
     int id,
     int price,
     String productname,

@@ -53,6 +53,8 @@ export 'package:expatretail/zcustomer/menu/view/menudetail_page.dart';
 export 'package:expatretail/zcustomer/menu/view/itemholder_page.dart';
 
 //CART PAGE
+export 'package:expatretail/service/cart_service.dart';
+export 'package:expatretail/zcustomer/keranjang/controller/keranjang_controller.dart';
 export 'package:expatretail/zcustomer/keranjang/view/keranjang_page.dart';
 export 'package:expatretail/zcustomer/keranjang/view/keranjangholder_page.dart';
 

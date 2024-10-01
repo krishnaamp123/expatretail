@@ -9,40 +9,34 @@ class KeranjangHolderPage extends StatefulWidget {
 }
 
 class _PackageListState extends State<KeranjangHolderPage> {
-  bool isDataLoaded = true; // Set true karena data dummy langsung tersedia
+  var cartCon = Get.put(CartController());
+  bool isDataLoaded = false;
 
-  // Data dummy untuk digunakan
-  final List<Map<String, String>> dummyData = [
-    {
-      'idpaket': '1',
-      'name': 'Nomad',
-      'image': 'lib/image/produk1.png',
-      'description': 'Description1',
-      'itemprice': '150000'
-    },
-    {
-      'idpaket': '2',
-      'name': 'Patria',
-      'image': 'lib/image/produk2.png',
-      'description': 'Description2',
-      'itemprice': '250000'
-    },
-    {
-      'idpaket': '3',
-      'name': 'Habitat',
-      'image': 'lib/image/produk3.png',
-      'description': 'Description3',
-      'itemprice': '450000'
-    }
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
 
-  // Menyimpan nilai kuantitas untuk setiap item
-  List<int> itemQuantities = [1, 1, 1];
+  // Fungsi untuk memuat data
+  void _loadData() async {
+    await _refreshData();
+    await cartCon.getCart();
+    setState(() {
+      isDataLoaded = true;
+    });
+  }
+
+  // Function to handle refreshing
+  Future<void> _refreshData() async {
+    await cartCon.getCart();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async {}, // Tidak perlu refresh karena data dummy
+      onRefresh: () async {},
       child: isDataLoaded
           ? SingleChildScrollView(
               child: SizedBox(
@@ -50,19 +44,18 @@ class _PackageListState extends State<KeranjangHolderPage> {
                 width: MediaQuery.of(context).size.width,
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: dummyData.length,
+                  itemCount: cartCon.listCart.length,
                   padding: const EdgeInsets.only(bottom: 10),
                   itemExtent: 90,
                   itemBuilder: (BuildContext context, int index) {
-                    var paket = dummyData[index];
-                    return paketCard(
-                      paket['idpaket']!,
-                      paket['name']!,
-                      paket['image']!,
-                      paket['description']!,
-                      paket['itemprice']!,
-                      index,
-                    );
+                    var cart = cartCon.listCart[index];
+                    return cartCard(
+                        cart.idCustomer!.toInt(),
+                        cart.idCustomerProduct!.toInt(),
+                        cart.qty!.toInt(),
+                        cart.customerProduct!.price!.toInt(),
+                        cart.customerProduct!.product!.image.toString(),
+                        cart.customerProduct!.product!.productName.toString());
                   },
                 ),
               ),
@@ -75,20 +68,21 @@ class _PackageListState extends State<KeranjangHolderPage> {
     );
   }
 
-  Widget paketCard(
-    String idpaket,
-    String name,
+  Widget cartCard(
+    int idcustomer,
+    int idcustomerproduct,
+    int qty,
+    int price,
     String image,
-    String description,
-    String itemprice,
-    int index,
+    String productname,
   ) {
-    int hargaInt = int.parse(itemprice);
     String formatteditemprice = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp.',
       decimalDigits: 0,
-    ).format(hargaInt);
+    ).format(price);
+
+    final fullImageUrl = '$baseURL/storage/image/$image';
 
     return Column(
       children: [
@@ -106,8 +100,20 @@ class _PackageListState extends State<KeranjangHolderPage> {
                 const SizedBox(width: 15),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    image,
+                  child: Image.network(
+                    fullImageUrl,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'lib/image/logokotak.png',
+                        fit: BoxFit.cover,
+                        height: 70,
+                        width: 70,
+                      );
+                    },
+                    loadingBuilder: (context, child, progress) {
+                      if (progress == null) return child;
+                      return const CircularProgressIndicator();
+                    },
                     height: 70,
                     width: 70,
                     fit: BoxFit.cover,
@@ -125,7 +131,7 @@ class _PackageListState extends State<KeranjangHolderPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              name,
+                              productname,
                               style: const TextStyle(
                                 fontSize: 18,
                                 color: Colors.white,
@@ -148,7 +154,7 @@ class _PackageListState extends State<KeranjangHolderPage> {
                           ],
                         ),
                         InputQty.int(
-                          initVal: itemQuantities[index],
+                          initVal: qty,
                           qtyFormProps: const QtyFormProps(
                             enableTyping: false,
                             style: TextStyle(
@@ -166,10 +172,10 @@ class _PackageListState extends State<KeranjangHolderPage> {
                           steps: 1,
                           onQtyChanged: (value) {
                             if (value == 0 || value == null) {
-                              _showRemoveConfirmationDialog(index);
+                              _showRemoveConfirmationDialog;
                             } else {
                               setState(() {
-                                itemQuantities[index] = value;
+                                qty = value;
                               });
                             }
                           },
@@ -219,8 +225,8 @@ class _PackageListState extends State<KeranjangHolderPage> {
     );
   }
 
-  void _showRemoveConfirmationDialog(int index) {
-    int previousQuantity = itemQuantities[index];
+  void _showRemoveConfirmationDialog(int qty) {
+    int previousQuantity = qty;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -242,7 +248,7 @@ class _PackageListState extends State<KeranjangHolderPage> {
               ),
               onPressed: () {
                 setState(() {
-                  itemQuantities[index] = previousQuantity;
+                  qty = previousQuantity;
                 });
                 Navigator.of(context).pop();
               },
@@ -256,8 +262,7 @@ class _PackageListState extends State<KeranjangHolderPage> {
               ),
               onPressed: () {
                 setState(() {
-                  dummyData.removeAt(index);
-                  itemQuantities.removeAt(index);
+                  //
                 });
                 Navigator.of(context).pop();
               },
