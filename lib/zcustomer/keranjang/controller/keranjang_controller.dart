@@ -24,4 +24,40 @@ class CartController extends GetxController implements GetxService {
 
     isLoading.value = false;
   }
+
+  Future<void> sendCart(int idCustomer, int idCustomerProduct, int qty) async {
+    try {
+      var response = await cart.postCart(
+        idCustomer: idCustomer,
+        idCustomerProduct: idCustomerProduct,
+        qty: qty,
+      );
+
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("Cart successfully sent!");
+      } else {
+        print("Failed to send cart: ${response.body}");
+      }
+    } catch (e) {
+      print("Error while sending cart: $e");
+    }
+  }
+
+  Future<void> deleteCart(int idCart) async {
+    try {
+      var response = await cart.deleteCart(idCart);
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        listCart.removeWhere((item) => item.id == idCart);
+        print("Item successfully removed from cart!");
+      } else {
+        print("Failed to remove item from cart: ${response.body}");
+      }
+    } catch (e) {
+      print("Error while deleting item from cart: $e");
+    }
+  }
 }

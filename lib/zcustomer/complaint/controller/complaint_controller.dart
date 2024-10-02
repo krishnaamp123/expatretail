@@ -54,15 +54,11 @@ class ComplaintController extends GetxController implements GetxService {
     }
   }
 
-  final TextEditingController emailController = TextEditingController();
   final TextEditingController kodeproduksiController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
 
-  String? emailError;
   String? kodeproduksiError;
   String? descriptionError;
-  String? passwordError;
 
   String? validateKodeProduksi(String? kodeproduksiValue) {
     if (kodeproduksiValue == null || kodeproduksiValue.isEmpty) {

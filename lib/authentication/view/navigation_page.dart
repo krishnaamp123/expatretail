@@ -17,6 +17,11 @@ class _NavigationPageState extends State<NavigationPage> {
       size: 30,
     ),
     Icon(
+      Icons.shopping_cart_checkout,
+      color: Colors.white,
+      size: 30,
+    ),
+    Icon(
       Icons.report,
       color: Colors.white,
       size: 30,
@@ -59,9 +64,12 @@ class _NavigationPageState extends State<NavigationPage> {
         widget = const MenuPage();
         break;
       case 1:
-        widget = const ComplaintBarPage();
+        widget = const OrderPage();
         break;
       case 2:
+        widget = const ComplaintBarPage();
+        break;
+      case 3:
         widget = const ProfilePage();
         break;
       default:

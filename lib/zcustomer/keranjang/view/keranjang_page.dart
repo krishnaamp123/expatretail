@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
@@ -11,9 +13,25 @@ class KeranjangPage extends StatefulWidget {
 }
 
 class _KeranjangPageState extends State<KeranjangPage> {
+  String userAddress = '';
   @override
   void initState() {
     super.initState();
+    _loadAddressData();
+  }
+
+  _loadAddressData() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var addressData = localStorage.getString('user');
+    if (addressData != null) {
+      var address = jsonDecode(addressData);
+      if (address != null && address['address'] != null) {
+        String fullAddress = address['address'];
+        setState(() {
+          userAddress = fullAddress;
+        });
+      }
+    }
   }
 
   @override
@@ -66,7 +84,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Kantor Agency",
+                              "Expat. Roastery",
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Color.fromRGBO(114, 162, 138, 1),
@@ -75,7 +93,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
                               textAlign: TextAlign.left,
                             ),
                             Text(
-                              "Jl.Lorem Ipsum",
+                              "Jl. Gunung Salak No.35XXX, Denpasar, Bali",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.white,
@@ -117,11 +135,11 @@ class _KeranjangPageState extends State<KeranjangPage> {
                           ),
                         ),
                         const SizedBox(width: 20),
-                        const Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Kantor Agency",
+                            const Text(
+                              "Recipient",
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Color.fromRGBO(114, 162, 138, 1),
@@ -130,8 +148,8 @@ class _KeranjangPageState extends State<KeranjangPage> {
                               textAlign: TextAlign.left,
                             ),
                             Text(
-                              "Jl.Lorem Ipsum",
-                              style: TextStyle(
+                              userAddress,
+                              style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.white,
                                 fontWeight: FontWeight.normal,
@@ -210,127 +228,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
               ),
               const SizedBox(height: 5),
               const KeranjangHolderPage(),
-              const Divider(
-                height: 2,
-                thickness: 4,
-                color: Color.fromRGBO(33, 33, 33, 1),
-              ),
-              const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        "Payment Summary",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0,
-                        ),
-                        textAlign: TextAlign.left,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ]),
-              ),
-              const SizedBox(height: 10),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Price",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        letterSpacing: 0,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    Text(
-                      "Rp.535.000",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        letterSpacing: 0,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Delivery Fee",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        letterSpacing: 0,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    Text(
-                      "Rp.15.000",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        letterSpacing: 0,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 5),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Divider(
-                  height: 2,
-                  thickness: 2,
-                  color: Color.fromRGBO(33, 33, 33, 1),
-                ),
-              ),
-              const SizedBox(height: 5),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Total Payment",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color.fromRGBO(114, 162, 138, 1),
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    Text(
-                      "Rp.15.000",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        letterSpacing: 0,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
-                ),
-              ),
-              // const SizedBox(height: 20),
             ]),
           ),
         ),

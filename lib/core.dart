@@ -36,7 +36,7 @@ export 'package:expatretail/authentication/view/login_page.dart';
 export 'package:expatretail/authentication/controller/login_controller.dart';
 
 //DASHBOARD PAGE
-export 'package:expatretail/zcustomer/dashboard/view/dashboard_page.dart';
+export 'package:expatretail/a%20draft/dashboard/view/dashboard_page.dart';
 
 //COMPLAINT PAGE
 export 'package:expatretail/service/complaint_service.dart';
@@ -57,6 +57,10 @@ export 'package:expatretail/service/cart_service.dart';
 export 'package:expatretail/zcustomer/keranjang/controller/keranjang_controller.dart';
 export 'package:expatretail/zcustomer/keranjang/view/keranjang_page.dart';
 export 'package:expatretail/zcustomer/keranjang/view/keranjangholder_page.dart';
+
+//ORDER PAGE
+export 'package:expatretail/zcustomer/order/view/order_page.dart';
+export 'package:expatretail/zcustomer/order/view/orderholder_page.dart';
 
 //PROFILE PAGE
 export 'package:expatretail/service/profile_service.dart';

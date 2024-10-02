@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
-class KeranjangHolderPage extends StatefulWidget {
-  const KeranjangHolderPage({super.key});
+class OrderHolderPage extends StatefulWidget {
+  const OrderHolderPage({super.key});
 
   @override
-  State<KeranjangHolderPage> createState() => _KeranjangHolderPageState();
+  State<OrderHolderPage> createState() => _OrderHolderState();
 }
 
-class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
+class _OrderHolderState extends State<OrderHolderPage> {
   var cartCon = Get.put(CartController());
   bool isDataLoaded = false;
 
@@ -54,85 +54,26 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
       onRefresh: _refreshData,
       child: isDataLoaded
           ? SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 200,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: cartCon.listCart.length,
-                      padding: const EdgeInsets.only(bottom: 10),
-                      itemExtent: 90,
-                      itemBuilder: (BuildContext context, int index) {
-                        var cart = cartCon.listCart[index];
-                        return cartCard(
-                            cart.id!.toInt(),
-                            cart.idCustomer!.toInt(),
-                            cart.idCustomerProduct!.toInt(),
-                            cart.qty!.toInt(),
-                            cart.customerProduct!.price!.toInt(),
-                            cart.customerProduct!.product!.image.toString(),
-                            cart.customerProduct!.product!.productName
-                                .toString());
-                      },
-                    ),
-                  ),
-                  const Divider(
-                    height: 2,
-                    thickness: 4,
-                    color: Color.fromRGBO(33, 33, 33, 1),
-                  ),
-                  const SizedBox(height: 10),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            "Payment Summary",
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0,
-                            ),
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ]),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Total Payment",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color.fromRGBO(114, 162, 138, 1),
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        Text(
-                          formattedTotalPrice,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                            letterSpacing: 0,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              child: SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: cartCon.listCart.length,
+                  padding: const EdgeInsets.only(bottom: 10),
+                  itemExtent: 90,
+                  itemBuilder: (BuildContext context, int index) {
+                    var cart = cartCon.listCart[index];
+                    return cartCard(
+                        cart.id!.toInt(),
+                        cart.idCustomer!.toInt(),
+                        cart.idCustomerProduct!.toInt(),
+                        cart.qty!.toInt(),
+                        cart.customerProduct!.price!.toInt(),
+                        cart.customerProduct!.product!.image.toString(),
+                        cart.customerProduct!.product!.productName.toString());
+                  },
+                ),
               ),
             )
           : const Center(
@@ -163,7 +104,7 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
     return Column(
       children: [
         Card(
-          color: Colors.black,
+          color: const Color.fromRGBO(26, 26, 26, 1),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
@@ -264,14 +205,6 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
                 ),
               ],
             ),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Divider(
-            height: 2,
-            thickness: 2,
-            color: Color.fromRGBO(33, 33, 33, 1),
           ),
         ),
       ],

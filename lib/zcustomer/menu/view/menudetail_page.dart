@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
@@ -26,9 +28,30 @@ class MenuDetailPage extends StatefulWidget {
 }
 
 class _MenuDetailPageState extends State<MenuDetailPage> {
+  final CartController cartController = CartController();
+  int? userid;
+  int jumlahitem = 1;
+
   @override
   void initState() {
     super.initState();
+    _loadIdData();
+  }
+
+  _loadIdData() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var idData = localStorage.getString('user');
+    if (idData != null) {
+      var id = jsonDecode(idData);
+      if (id != null && id['id'] is int) {
+        setState(() {
+          userid = id['id'];
+        });
+        print("idData from SharedPreferences: $userid");
+      } else {
+        print("ID bukan integer");
+      }
+    }
   }
 
   @override
@@ -144,13 +167,13 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                   width: 12,
                   btnColor: Color.fromRGBO(114, 162, 138, 1),
                 ),
-                // initVal: jumlahKaryawan,
+                initVal: jumlahitem,
                 minVal: 1,
                 maxVal: 50,
                 steps: 1,
                 onQtyChanged: (value) {
                   setState(() {
-                    // jumlahKaryawan = value ?? 1;
+                    jumlahitem = value ?? 1;
                   });
                 },
               ),
@@ -236,7 +259,25 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    cartController.sendCart(userid!, widget.id, jumlahitem);
+                    const snackBar = SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'Success!',
+                        color: Color.fromRGBO(114, 162, 138, 1),
+                        message: 'Thank you, complaint successfully sent!',
+                        contentType: ContentType.success,
+                      ),
+                    );
+
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                    Navigator.of(context).pop();
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10), // Radius tombol
