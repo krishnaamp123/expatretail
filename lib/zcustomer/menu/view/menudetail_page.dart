@@ -255,7 +255,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0,
-                    ), // Ukuran teks diperkecil
+                    ),
                   ),
                 ),
                 ElevatedButton(
@@ -268,7 +268,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                       content: AwesomeSnackbarContent(
                         title: 'Success!',
                         color: Color.fromRGBO(114, 162, 138, 1),
-                        message: 'Thank you, complaint successfully sent!',
+                        message: 'Thank you, item successfully added!',
                         contentType: ContentType.success,
                       ),
                     );

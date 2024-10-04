@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
@@ -10,7 +12,9 @@ class KeranjangHolderPage extends StatefulWidget {
 
 class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
   var cartCon = Get.put(CartController());
+  final OrderController orderController = OrderController();
   bool isDataLoaded = false;
+  int? userid;
 
   @override
   void initState() {
@@ -30,7 +34,24 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
   // Function to handle refreshing
   Future<void> _refreshData() async {
     await cartCon.getCart();
+    _loadIdData();
     setState(() {});
+  }
+
+  _loadIdData() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var idData = localStorage.getString('user');
+    if (idData != null) {
+      var id = jsonDecode(idData);
+      if (id != null && id['id'] is int) {
+        setState(() {
+          userid = id['id'];
+        });
+        print("idData from SharedPreferences: $userid");
+      } else {
+        print("ID bukan integer");
+      }
+    }
   }
 
   // Fungsi untuk menghitung total harga
@@ -131,6 +152,13 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
                         ),
                       ],
                     ),
+                  ),
+                  const SizedBox(height: 20),
+                  ButtonWidget(
+                    text: "ORDER",
+                    onTap: () {
+                      _showConfirmationDialog();
+                    },
                   ),
                 ],
               ),
@@ -314,12 +342,117 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
                 ),
               ),
               onPressed: () {
-                setState(() async {
-                  await cartCon.deleteCart(id);
-                  await _refreshData();
+                setState(() {
+                  cartCon.deleteCart(id);
+                  _refreshData();
                   Navigator.of(context).pop();
                 });
               },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.black,
+          title: const Text(
+            "Confirm Order",
+            style: TextStyle(
+              color: Color.fromRGBO(114, 162, 138, 1),
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Kantor Agency",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                "Jl.Lorem Ipsum",
+                style: TextStyle(
+                    color: Colors.grey, fontWeight: FontWeight.normal),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Radius tombol
+                    ),
+                    backgroundColor: const Color.fromRGBO(33, 33, 33, 1),
+                  ),
+                  child: const Text(
+                    "Cancel",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0,
+                    ), // Ukuran teks diperkecil
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    orderController.createOrder(
+                        userid!, _calculateTotalPrice());
+                    const snackBar = SnackBar(
+                      elevation: 0,
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.transparent,
+                      content: AwesomeSnackbarContent(
+                        title: 'Success!',
+                        color: Color.fromRGBO(114, 162, 138, 1),
+                        message: 'Thank you, item successfully added!',
+                        contentType: ContentType.success,
+                      ),
+                    );
+
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Radius tombol
+                    ),
+                    backgroundColor: const Color.fromRGBO(114, 162, 138, 1),
+                  ),
+                  child: const Text(
+                    "Confirm",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0,
+                    ), // Ukuran teks diperkecil
+                  ),
+                ),
+              ],
             ),
           ],
         );

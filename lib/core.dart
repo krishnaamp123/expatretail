@@ -59,6 +59,8 @@ export 'package:expatretail/zcustomer/keranjang/view/keranjang_page.dart';
 export 'package:expatretail/zcustomer/keranjang/view/keranjangholder_page.dart';
 
 //ORDER PAGE
+export 'package:expatretail/service/order_service.dart';
+export 'package:expatretail/zcustomer/order/controller/order_controller.dart';
 export 'package:expatretail/zcustomer/order/view/order_page.dart';
 export 'package:expatretail/zcustomer/order/view/orderholder_page.dart';
 
