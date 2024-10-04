@@ -9,7 +9,7 @@ class OrderHolderPage extends StatefulWidget {
 }
 
 class _OrderHolderState extends State<OrderHolderPage> {
-  var cartCon = Get.put(CartController());
+  var orderCon = Get.put(OrderController());
   bool isDataLoaded = false;
 
   @override
@@ -21,7 +21,7 @@ class _OrderHolderState extends State<OrderHolderPage> {
   // Fungsi untuk memuat data
   void _loadData() async {
     await _refreshData();
-    await cartCon.getCart();
+    await orderCon.getOrder();
     setState(() {
       isDataLoaded = true;
     });
@@ -29,49 +29,29 @@ class _OrderHolderState extends State<OrderHolderPage> {
 
   // Function to handle refreshing
   Future<void> _refreshData() async {
-    await cartCon.getCart();
+    await orderCon.getOrder();
     setState(() {});
-  }
-
-  // Fungsi untuk menghitung total harga
-  int _calculateTotalPrice() {
-    int totalPrice = 0;
-    for (var cart in cartCon.listCart) {
-      totalPrice += cart.customerProduct!.price!.toInt() * cart.qty!.toInt();
-    }
-    return totalPrice;
   }
 
   @override
   Widget build(BuildContext context) {
-    String formattedTotalPrice = NumberFormat.currency(
-      locale: 'id',
-      symbol: 'Rp.',
-      decimalDigits: 0,
-    ).format(_calculateTotalPrice());
-
     return RefreshIndicator(
       onRefresh: _refreshData,
       child: isDataLoaded
           ? SingleChildScrollView(
               child: SizedBox(
-                height: 200,
+                height: 700,
                 width: MediaQuery.of(context).size.width,
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: cartCon.listCart.length,
-                  padding: const EdgeInsets.only(bottom: 10),
-                  itemExtent: 90,
+                  itemCount: orderCon.listOrder.length,
+                  padding:
+                      const EdgeInsets.only(bottom: 10, left: 15, right: 15),
+                  itemExtent: 100,
                   itemBuilder: (BuildContext context, int index) {
-                    var cart = cartCon.listCart[index];
-                    return cartCard(
-                        cart.id!.toInt(),
-                        cart.idCustomer!.toInt(),
-                        cart.idCustomerProduct!.toInt(),
-                        cart.qty!.toInt(),
-                        cart.customerProduct!.price!.toInt(),
-                        cart.customerProduct!.product!.image.toString(),
-                        cart.customerProduct!.product!.productName.toString());
+                    var order = orderCon.listOrder[index];
+                    return orderCard(order.id!.toInt(),
+                        order.totalPrice!.toInt(), order.createdAt.toString());
                   },
                 ),
               ),
@@ -84,23 +64,14 @@ class _OrderHolderState extends State<OrderHolderPage> {
     );
   }
 
-  Widget cartCard(
-    int id,
-    int idcustomer,
-    int idcustomerproduct,
-    int qty,
-    int price,
-    String image,
-    String productname,
-  ) {
-    String formatteditemprice = NumberFormat.currency(
+  Widget orderCard(int id, int totalPrice, String tanggalBuat) {
+    String formattedtotalprice = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp.',
       decimalDigits: 0,
-    ).format(price);
-
-    final fullImageUrl = '$baseURL/storage/image/$image';
-
+    ).format(totalPrice);
+    DateTime parsedDate = DateTime.parse(tanggalBuat);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
     return Column(
       children: [
         Card(
@@ -110,153 +81,55 @@ class _OrderHolderState extends State<OrderHolderPage> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: SizedBox(
-            height: 80,
+            height: 90,
             width: double.infinity,
-            child: Row(
-              children: [
-                const SizedBox(width: 15),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    fullImageUrl,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'lib/image/logokotak.png',
-                        fit: BoxFit.cover,
-                        height: 70,
-                        width: 70,
-                      );
-                    },
-                    loadingBuilder: (context, child, progress) {
-                      if (progress == null) return child;
-                      return const CircularProgressIndicator();
-                    },
-                    height: 70,
-                    width: 70,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(width: 15),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              productname,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0,
-                              ),
-                              textAlign: TextAlign.left,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              formatteditemprice,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Color.fromRGBO(114, 162, 138, 1),
-                                fontWeight: FontWeight.normal,
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                          ],
-                        ),
-                        InputQty.int(
-                          initVal: qty,
-                          qtyFormProps: const QtyFormProps(
-                            enableTyping: false,
-                            style: TextStyle(
-                              color: Color.fromRGBO(114, 162, 138, 1),
-                            ),
-                          ),
-                          decoration: const QtyDecorationProps(
-                            isBordered: false,
-                            borderShape: BorderShapeBtn.circle,
-                            width: 10,
-                            btnColor: Color.fromRGBO(114, 162, 138, 1),
-                          ),
-                          minVal: 0,
-                          maxVal: 50,
-                          steps: 1,
-                          onQtyChanged: (value) {
-                            if (value == 0 || value == null) {
-                              _showRemoveConfirmationDialog(qty, id);
-                            } else {
-                              setState(() {
-                                cartCon.listCart
-                                    .firstWhere((cart) => cart.id == id)
-                                    .qty = value;
-                              });
-                            }
-                          },
-                        ),
-                      ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Order $id",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0,
                     ),
+                    textAlign: TextAlign.left,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 2),
+                  Text(
+                    formattedDate,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      letterSpacing: 0,
+                    ),
+                    textAlign: TextAlign.left,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    formattedtotalprice,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color.fromRGBO(114, 162, 138, 1),
+                      fontWeight: FontWeight.normal,
+                    ),
+                    textAlign: TextAlign.left,
+                  )
+                ],
+              ),
             ),
           ),
         ),
       ],
-    );
-  }
-
-  void _showRemoveConfirmationDialog(int qty, int id) {
-    int previousQuantity = qty;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.black,
-          title: const Text(
-            "Remove Item",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          content: const Text(
-            "Would you like to remove this item from your cart?",
-            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.normal),
-          ),
-          actions: [
-            TextButton(
-              child: const Text(
-                "Cancel",
-                style: TextStyle(color: Colors.grey),
-              ),
-              onPressed: () {
-                setState(() {
-                  qty = previousQuantity;
-                });
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text(
-                "Remove",
-                style: TextStyle(
-                  color: Color.fromRGBO(114, 162, 138, 1),
-                ),
-              ),
-              onPressed: () {
-                setState(() async {
-                  await cartCon.deleteCart(id);
-                  await _refreshData();
-                  Navigator.of(context).pop();
-                });
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

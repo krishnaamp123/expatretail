@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
 class OrderPage extends StatefulWidget {
-  // final String username;
   const OrderPage({Key? key}) : super(key: key);
 
   @override
@@ -32,6 +31,7 @@ class OrderPageState extends State<OrderPage> {
                 thickness: 4,
                 color: Color.fromRGBO(33, 33, 33, 1),
               ),
+              SizedBox(height: 10),
               OrderHolderPage(),
             ]),
           ),
