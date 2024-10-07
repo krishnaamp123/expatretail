@@ -138,6 +138,19 @@ class _ComplaintPageState extends State<ComplaintPage> {
                             initialDate: selectedDate,
                             firstDate: DateTime(2024),
                             lastDate: DateTime(2025),
+                            builder: (BuildContext context, Widget? child) {
+                              return Theme(
+                                data: ThemeData(
+                                  colorScheme: const ColorScheme.light(
+                                    primary: Color.fromRGBO(114, 162, 138, 1),
+                                    onPrimary: Colors.white,
+                                    onSurface: Colors.black,
+                                  ),
+                                  dialogBackgroundColor: Colors.white,
+                                ),
+                                child: child!,
+                              );
+                            },
                           );
                           if (dateTime != null) {
                             setState(() {

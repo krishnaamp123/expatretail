@@ -1,3 +1,4 @@
+import 'package:expatretail/model/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
@@ -50,8 +51,12 @@ class _OrderHolderState extends State<OrderHolderPage> {
                   itemExtent: 100,
                   itemBuilder: (BuildContext context, int index) {
                     var order = orderCon.listOrder[index];
-                    return orderCard(order.id!.toInt(),
-                        order.totalPrice!.toInt(), order.createdAt.toString());
+                    return orderCard(
+                        order.id!.toInt(),
+                        order.totalPrice!.toInt(),
+                        order.status.toString(),
+                        order.createdAt.toString(),
+                        order.details!.toList());
                   },
                 ),
               ),
@@ -64,7 +69,8 @@ class _OrderHolderState extends State<OrderHolderPage> {
     );
   }
 
-  Widget orderCard(int id, int totalPrice, String tanggalBuat) {
+  Widget orderCard(int id, int totalPrice, String status, String tanggalBuat,
+      List<Details> details) {
     String formattedtotalprice = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp.',
@@ -72,64 +78,81 @@ class _OrderHolderState extends State<OrderHolderPage> {
     ).format(totalPrice);
     DateTime parsedDate = DateTime.parse(tanggalBuat);
     String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-    return Column(
-      children: [
-        Card(
-          color: const Color.fromRGBO(26, 26, 26, 1),
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrderDetailPage(
+              id: id,
+              totalPrice: formattedtotalprice,
+              status: status,
+              tanggalBuat: formattedDate,
+              details: details,
+            ),
           ),
-          child: SizedBox(
-            height: 90,
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Order $id",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0,
+        );
+      },
+      child: Column(
+        children: [
+          Card(
+            color: const Color.fromRGBO(26, 26, 26, 1),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: SizedBox(
+              height: 90,
+              width: double.infinity,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Order $id",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0,
+                      ),
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    textAlign: TextAlign.left,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    formattedDate,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal,
-                      letterSpacing: 0,
+                    const SizedBox(height: 2),
+                    Text(
+                      formattedDate,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal,
+                        letterSpacing: 0,
+                      ),
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    textAlign: TextAlign.left,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    formattedtotalprice,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Color.fromRGBO(114, 162, 138, 1),
-                      fontWeight: FontWeight.normal,
-                    ),
-                    textAlign: TextAlign.left,
-                  )
-                ],
+                    const SizedBox(height: 2),
+                    Text(
+                      formattedtotalprice,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color.fromRGBO(114, 162, 138, 1),
+                        fontWeight: FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.left,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:expatretail/core.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +17,11 @@ class MyExpatApp extends StatelessWidget {
       home: CheckAuth(),
       theme: ThemeData(
         primarySwatch: Colors.grey,
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Color.fromRGBO(114, 162, 138, 1),
+          selectionColor: Color.fromRGBO(114, 162, 138, 1),
+          selectionHandleColor: Color.fromRGBO(114, 162, 138, 1),
+        ),
       ),
     );
   }
@@ -27,7 +34,7 @@ class CheckAuth extends StatefulWidget {
 
 class _CheckAuthState extends State<CheckAuth> {
   bool isAuth = false;
-  var roles;
+  var role;
 
   @override
   void initState() {
@@ -41,7 +48,12 @@ class _CheckAuthState extends State<CheckAuth> {
     if (token != null) {
       setState(() {
         isAuth = true;
-        roles = localStorage.getString('roles');
+        var userJson = localStorage.getString('user');
+        if (userJson != null) {
+          Map<String, dynamic> user = jsonDecode(userJson);
+          var role = user['role']; // Access the role from the user object
+          print('User role: $role');
+        }
       });
     }
   }
@@ -51,16 +63,15 @@ class _CheckAuthState extends State<CheckAuth> {
     Widget child;
     if (isAuth) {
       // Berdasarkan peran (role) pengguna, tentukan halaman yang akan ditampilkan
-      if (roles == '"customers"') {
+      if (role == 'retail') {
         child = const NavigationPage();
-        // } else if (roles == '"sales"') {
-        //   child = StartSales();
+        // } else if (role == 'supermarket') {
+        // child = StartSupermarket();
       } else {
-        // Jika peran tidak sesuai, bisa menampilkan halaman default atau splash screen
-        child = const LandingPage();
+        child = const LoginPage();
       }
     } else {
-      child = const LandingPage();
+      child = const LoginPage();
     }
 
     return Scaffold(

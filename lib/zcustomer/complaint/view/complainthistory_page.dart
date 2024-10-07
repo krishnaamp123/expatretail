@@ -15,12 +15,12 @@ class _ComplaintHistoryPageState extends State<ComplaintHistoryPage> {
   @override
   void initState() {
     super.initState();
+    _refreshData();
     _loadData();
   }
 
   // Fungsi untuk memuat data
   void _loadData() async {
-    await _refreshData();
     await complaintCon.getComplaint();
     setState(() {
       isDataLoaded = true;

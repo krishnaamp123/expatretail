@@ -57,6 +57,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
   @override
   Widget build(BuildContext context) {
     int itemprice = widget.price;
+    int weight = widget.weight;
     String formattedItemPrice =
         NumberFormat.currency(locale: 'id', symbol: 'Rp.', decimalDigits: 0)
             .format(itemprice);
@@ -115,8 +116,28 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                         fontWeight: FontWeight.normal,
                       ),
                       textAlign: TextAlign.left,
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      widget.packagingname,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.left,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 5),
+                    TextWidget(
+                      "$weight g",
+                      16,
+                      Colors.white,
+                      FontWeight.normal,
+                      letterSpace: 0,
                     ),
                     const SizedBox(height: 5),
                     Text(

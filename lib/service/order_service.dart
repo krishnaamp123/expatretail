@@ -23,7 +23,6 @@ class OrderService {
   Future<http.Response> postOrder({
     required int idCustomer,
     required List<Map<String, dynamic>> details,
-    required int totalPrice,
   }) async {
     var token = await getToken();
     if (token.isEmpty) {
@@ -39,7 +38,6 @@ class OrderService {
     var body = jsonEncode({
       'id_customer': idCustomer,
       'details': details,
-      'total_price': totalPrice,
     });
 
     var url = Uri.parse('$baseURL/order');

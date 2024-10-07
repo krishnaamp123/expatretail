@@ -44,6 +44,48 @@ class LoginController {
     return emailValidation == null && passwordValidation == null;
   }
 
+  void navigateBasedOnRole(BuildContext context, String role) {
+    if (role == 'retail') {
+      navigateToDashboard(context);
+    } else if (role == 'supermarket') {
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const StartSupermarket(),
+      //   ),
+      // );
+      const snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Failure!',
+          message: 'Supermarket app still under development!',
+          contentType: ContentType.failure,
+        ),
+      );
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
+    } else {
+      const snackBar = SnackBar(
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Failure!',
+          message: 'Admin were using the web app!',
+          contentType: ContentType.failure,
+        ),
+      );
+
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
+    }
+  }
+
   bool validateToken(String token) {
     final segments = token.split('.');
     if (segments.length != 3) {
@@ -60,9 +102,30 @@ class LoginController {
         var token = localStorage.getString('token');
         print('tokenlogin: $token');
         if (token != null && validateToken(token)) {
-          var user = localStorage.getString('user');
-          print('userprofile: $user');
-          navigateToDashboard(context);
+          var userJson = localStorage.getString('user');
+          if (userJson != null) {
+            Map<String, dynamic> user = jsonDecode(userJson);
+            var role = user['role']; // Access the role from the user object
+            print('User role: $role');
+            if (role != null && role.isNotEmpty) {
+              navigateBasedOnRole(context, role);
+            } else {
+              const snackBar = SnackBar(
+                elevation: 0,
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.transparent,
+                content: AwesomeSnackbarContent(
+                  title: 'Info',
+                  message: 'The account entered does not have a role.',
+                  contentType: ContentType.failure,
+                ),
+              );
+
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(snackBar);
+            }
+          }
         }
       } else {
         const snackBar = SnackBar(
@@ -122,7 +185,7 @@ class LoginController {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const NavigationPage(),
+        builder: (context) => const NavigationPage(initialIndex: 0),
       ),
     );
   }

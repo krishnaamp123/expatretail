@@ -24,9 +24,9 @@ export 'package:expatretail/components/color.dart';
 export 'dart:async';
 
 //LANDING PAGE
-export 'package:expatretail/landing/view/landing_page.dart';
-export 'package:expatretail/landing/data/landing_info.dart';
-export 'package:expatretail/landing/data/landing_items.dart';
+export 'package:expatretail/a%20draft/landing/view/landing_page.dart';
+export 'package:expatretail/a%20draft/landing/data/landing_info.dart';
+export 'package:expatretail/a%20draft/landing/data/landing_items.dart';
 
 //AUTH PAGE
 export 'package:expatretail/service/token.dart';
@@ -63,6 +63,7 @@ export 'package:expatretail/service/order_service.dart';
 export 'package:expatretail/zcustomer/order/controller/order_controller.dart';
 export 'package:expatretail/zcustomer/order/view/order_page.dart';
 export 'package:expatretail/zcustomer/order/view/orderholder_page.dart';
+export 'package:expatretail/zcustomer/order/view/orderdetail_page.dart';
 
 //PROFILE PAGE
 export 'package:expatretail/service/profile_service.dart';

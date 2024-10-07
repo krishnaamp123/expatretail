@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:expatretail/core.dart';
 import 'package:expatretail/model/cart_model.dart';
 import 'package:expatretail/model/order_model.dart';
-import 'package:get/get.dart';
 
 class OrderController extends GetxController implements GetxService {
   var listOrder = <OrderModel>[].obs;
@@ -50,22 +49,7 @@ class OrderController extends GetxController implements GetxService {
     isLoading.value = false;
   }
 
-  Future<void> deleteCart(int idCart) async {
-    try {
-      var response = await cartService.deleteCart(idCart);
-
-      if (response.statusCode == 200 || response.statusCode == 204) {
-        listCart.removeWhere((item) => item.id == idCart);
-        print("Item successfully removed from cart!");
-      } else {
-        print("Failed to remove item from cart: ${response.body}");
-      }
-    } catch (e) {
-      print("Error while deleting item from cart: $e");
-    }
-  }
-
-  Future<void> createOrder(int idCustomer, int totalPrice) async {
+  Future<void> createOrder(int idCustomer) async {
     try {
       isLoading.value = true;
 
@@ -82,7 +66,6 @@ class OrderController extends GetxController implements GetxService {
         return {
           'id': cart.id,
           'qty': cart.qty,
-          'price': cart.customerProduct?.price ?? 0,
         };
       }).toList();
 
@@ -92,7 +75,6 @@ class OrderController extends GetxController implements GetxService {
       var response = await orderService.postOrder(
         idCustomer: idCustomer,
         details: details,
-        totalPrice: totalPrice,
       );
 
       print('Order response status: ${response.statusCode}');
@@ -100,10 +82,7 @@ class OrderController extends GetxController implements GetxService {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         print("Order successfully created!");
-        for (var cart in listCart) {
-          await deleteCart(cart.id!); // Menghapus item dari backend
-        }
-        listCart.clear(); // Kosongkan cart setelah order berhasil
+        listCart.clear();
       } else {
         print("Failed to create order: ${response.body}");
       }

@@ -42,6 +42,7 @@ class TextFieldWidget extends StatelessWidget {
             obscureText: obscureText,
             onChanged: onChanged,
             validator: validator,
+            cursorColor: const Color.fromRGBO(114, 162, 138, 1),
             decoration: InputDecoration(
               enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white),

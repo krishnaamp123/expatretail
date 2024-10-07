@@ -17,12 +17,12 @@ class _ItemHolderPageState extends State<ItemHolderPage> {
   @override
   void initState() {
     super.initState();
+    _refreshData();
     _loadData();
   }
 
   // Fungsi untuk memuat data
   void _loadData() async {
-    await _refreshData();
     await menuCon.getMenu();
     setState(() {
       isDataLoaded = true;
@@ -38,7 +38,7 @@ class _ItemHolderPageState extends State<ItemHolderPage> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async {},
+      onRefresh: _refreshData,
       child: isDataLoaded
           ? SingleChildScrollView(
               child: Card(

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class ProfileService {
   Future<http.Response> getProfile(int id) async {
     var token = await getToken();
-    var url = Uri.parse('$baseURL/auth/profile/$id');
+    var url = Uri.parse('$baseURL/profile/$id');
     http.Response response = await http.get(url, headers: {
       'Content-Type': 'application/json',
     });

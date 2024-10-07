@@ -78,7 +78,7 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 200,
+                    height: 270,
                     width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
                       shrinkWrap: true,
@@ -417,8 +417,7 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    orderController.createOrder(
-                        userid!, _calculateTotalPrice());
+                    orderController.createOrder(userid!);
                     const snackBar = SnackBar(
                       elevation: 0,
                       behavior: SnackBarBehavior.floating,
@@ -434,7 +433,13 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(snackBar);
-                    Navigator.of(context).pop();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const NavigationPage(initialIndex: 1),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

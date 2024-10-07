@@ -2,14 +2,16 @@ import 'package:expatretail/core.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
-  // final String service_user;
-  const NavigationPage({super.key});
+  final int initialIndex;
+  const NavigationPage({super.key, this.initialIndex = 0});
 
   @override
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
 class _NavigationPageState extends State<NavigationPage> {
+  late int index;
+
   final items = const [
     Icon(
       Icons.shopping_cart,
@@ -33,7 +35,11 @@ class _NavigationPageState extends State<NavigationPage> {
     ),
   ];
 
-  int index = 0;
+  @override
+  void initState() {
+    super.initState();
+    index = widget.initialIndex; // Gunakan initialIndex dari widget
+  }
 
   @override
   Widget build(BuildContext context) {
