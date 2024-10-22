@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:expatretail/core.dart';
-import 'package:expatretail/model/profile_model.dart';
+import 'package:expatretail/model/retail_model/profile_model.dart';
 
 class ProfileController extends GetxController implements GetxService {
   var listProfile = <ProfileModel>[].obs;

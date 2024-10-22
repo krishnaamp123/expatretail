@@ -2,16 +2,6 @@ import 'package:flutter/material.dart';
 
 AppBar buildAppBarTok(BuildContext context, String title) {
   return AppBar(
-    // iconTheme: const IconThemeData(size: 28, color: Colors.white),
-    // leading: Padding(
-    //   padding: const EdgeInsets.only(left: 16.0),
-    //   child: IconButton(
-    //     icon: const Icon(Icons.arrow_back_ios_rounded),
-    //     onPressed: () {
-    //       Navigator.of(context).pop();
-    //     },
-    //   ),
-    // ),
     title: Text(
       title, // Title is dynamic
       style: const TextStyle(
@@ -24,5 +14,6 @@ AppBar buildAppBarTok(BuildContext context, String title) {
     toolbarHeight: 80,
     backgroundColor: Colors.black,
     elevation: 0,
+    automaticallyImplyLeading: false,
   );
 }

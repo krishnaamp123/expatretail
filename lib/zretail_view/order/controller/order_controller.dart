@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:expatretail/core.dart';
-import 'package:expatretail/model/cart_model.dart';
-import 'package:expatretail/model/order_model.dart';
+import 'package:expatretail/model/retail_model/cart_model.dart';
+import 'package:expatretail/model/retail_model/order_model.dart';
 
 class OrderController extends GetxController implements GetxService {
   var listOrder = <OrderModel>[].obs;

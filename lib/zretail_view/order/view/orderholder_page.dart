@@ -1,4 +1,4 @@
-import 'package:expatretail/model/order_model.dart';
+import 'package:expatretail/model/retail_model/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
@@ -41,7 +41,7 @@ class _OrderHolderState extends State<OrderHolderPage> {
       child: isDataLoaded
           ? SingleChildScrollView(
               child: SizedBox(
-                height: 700,
+                height: 600,
                 width: MediaQuery.of(context).size.width,
                 child: ListView.builder(
                   shrinkWrap: true,

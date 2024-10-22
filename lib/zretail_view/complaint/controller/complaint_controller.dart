@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:expatretail/core.dart';
-import 'package:expatretail/model/complaint_model.dart';
+import 'package:expatretail/model/retail_model/complaint_model.dart';
 import 'package:flutter/material.dart';
 
 class ComplaintController extends GetxController implements GetxService {

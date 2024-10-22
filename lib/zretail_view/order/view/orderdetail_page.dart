@@ -1,4 +1,4 @@
-import 'package:expatretail/model/order_model.dart';
+import 'package:expatretail/model/retail_model/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 

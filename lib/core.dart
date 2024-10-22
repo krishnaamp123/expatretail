@@ -39,36 +39,36 @@ export 'package:expatretail/authentication/controller/login_controller.dart';
 export 'package:expatretail/a%20draft/dashboard/view/dashboard_page.dart';
 
 //COMPLAINT PAGE
-export 'package:expatretail/service/complaint_service.dart';
-export 'package:expatretail/zcustomer/complaint/controller/complaint_controller.dart';
-export 'package:expatretail/zcustomer/complaint/view/complaint_page.dart';
-export 'package:expatretail/zcustomer/complaint/view/complaintbar_page.dart';
-export 'package:expatretail/zcustomer/complaint/view/complainthistory_page.dart';
+export 'package:expatretail/service/retail_service/complaint_service.dart';
+export 'package:expatretail/zretail_view/complaint/controller/complaint_controller.dart';
+export 'package:expatretail/zretail_view/complaint/view/complaint_page.dart';
+export 'package:expatretail/zretail_view/complaint/view/complaintbar_page.dart';
+export 'package:expatretail/zretail_view/complaint/view/complainthistory_page.dart';
 
 //MENU PAGE
-export 'package:expatretail/service/customerproduct_service.dart';
-export 'package:expatretail/zcustomer/menu/controller/menu_controller.dart';
-export 'package:expatretail/zcustomer/menu/view/menu_page.dart';
-export 'package:expatretail/zcustomer/menu/view/menudetail_page.dart';
-export 'package:expatretail/zcustomer/menu/view/itemholder_page.dart';
+export 'package:expatretail/service/retail_service/customerproduct_service.dart';
+export 'package:expatretail/zretail_view/menu/controller/menu_controller.dart';
+export 'package:expatretail/zretail_view/menu/view/menu_page.dart';
+export 'package:expatretail/zretail_view/menu/view/menudetail_page.dart';
+export 'package:expatretail/zretail_view/menu/view/itemholder_page.dart';
 
 //CART PAGE
-export 'package:expatretail/service/cart_service.dart';
-export 'package:expatretail/zcustomer/keranjang/controller/keranjang_controller.dart';
-export 'package:expatretail/zcustomer/keranjang/view/keranjang_page.dart';
-export 'package:expatretail/zcustomer/keranjang/view/keranjangholder_page.dart';
+export 'package:expatretail/service/retail_service/cart_service.dart';
+export 'package:expatretail/zretail_view/keranjang/controller/keranjang_controller.dart';
+export 'package:expatretail/zretail_view/keranjang/view/keranjang_page.dart';
+export 'package:expatretail/zretail_view/keranjang/view/keranjangholder_page.dart';
 
 //ORDER PAGE
-export 'package:expatretail/service/order_service.dart';
-export 'package:expatretail/zcustomer/order/controller/order_controller.dart';
-export 'package:expatretail/zcustomer/order/view/order_page.dart';
-export 'package:expatretail/zcustomer/order/view/orderholder_page.dart';
-export 'package:expatretail/zcustomer/order/view/orderdetail_page.dart';
+export 'package:expatretail/service/retail_service/order_service.dart';
+export 'package:expatretail/zretail_view/order/controller/order_controller.dart';
+export 'package:expatretail/zretail_view/order/view/order_page.dart';
+export 'package:expatretail/zretail_view/order/view/orderholder_page.dart';
+export 'package:expatretail/zretail_view/order/view/orderdetail_page.dart';
 
 //PROFILE PAGE
-export 'package:expatretail/service/profile_service.dart';
-export 'package:expatretail/zcustomer/profile/controller/profile_controller.dart';
-export 'package:expatretail/zcustomer/profile/view/profile_page.dart';
+export 'package:expatretail/service/retail_service/profile_service.dart';
+export 'package:expatretail/zretail_view/profile/controller/profile_controller.dart';
+export 'package:expatretail/zretail_view/profile/view/profile_page.dart';
 
 //WIDGET
 export 'package:expatretail/widget/text_widget.dart';
