@@ -2,14 +2,14 @@ import 'package:expatretail/model/retail_model/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
-class OrderDetailPage extends StatefulWidget {
+class OrderRetailDetailPage extends StatefulWidget {
   final int id;
   final String totalPrice;
   final String status;
   final String tanggalBuat;
   final List<Details> details;
 
-  const OrderDetailPage(
+  const OrderRetailDetailPage(
       {Key? key,
       required this.id,
       required this.totalPrice,
@@ -19,10 +19,10 @@ class OrderDetailPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<OrderDetailPage> createState() => OrderDetailPageState();
+  State<OrderRetailDetailPage> createState() => OrderRetailDetailPageState();
 }
 
-class OrderDetailPageState extends State<OrderDetailPage> {
+class OrderRetailDetailPageState extends State<OrderRetailDetailPage> {
   @override
   void initState() {
     super.initState();

@@ -3,23 +3,26 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
-class KeranjangHolderPage extends StatefulWidget {
-  const KeranjangHolderPage({super.key});
+class KeranjangRetailHolderPage extends StatefulWidget {
+  const KeranjangRetailHolderPage({super.key});
 
   @override
-  State<KeranjangHolderPage> createState() => _KeranjangHolderPageState();
+  State<KeranjangRetailHolderPage> createState() =>
+      _KeranjangRetailHolderPageState();
 }
 
-class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
-  var cartCon = Get.put(CartController());
-  final OrderController orderController = OrderController();
+class _KeranjangRetailHolderPageState extends State<KeranjangRetailHolderPage> {
+  var cartCon = Get.put(CartRetailController());
+  final OrderRetailController orderController = OrderRetailController();
   bool isDataLoaded = false;
   int? userid;
+  String userAddress = '';
 
   @override
   void initState() {
     super.initState();
     _loadData();
+    _loadAddressData();
   }
 
   // Fungsi untuk memuat data
@@ -54,6 +57,20 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
     }
   }
 
+  _loadAddressData() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var addressData = localStorage.getString('user');
+    if (addressData != null) {
+      var address = jsonDecode(addressData);
+      if (address != null && address['address'] != null) {
+        String fullAddress = address['address'];
+        setState(() {
+          userAddress = fullAddress;
+        });
+      }
+    }
+  }
+
   // Fungsi untuk menghitung total harga
   int _calculateTotalPrice() {
     int totalPrice = 0;
@@ -73,95 +90,92 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
 
     return RefreshIndicator(
       onRefresh: _refreshData,
+      color: const Color.fromRGBO(114, 162, 138, 1),
       child: isDataLoaded
-          ? SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 270,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: cartCon.listCart.length,
-                      padding: const EdgeInsets.only(bottom: 10),
-                      itemExtent: 90,
-                      itemBuilder: (BuildContext context, int index) {
-                        var cart = cartCon.listCart[index];
-                        return cartCard(
-                            cart.id!.toInt(),
-                            cart.idCustomer!.toInt(),
-                            cart.idCustomerProduct!.toInt(),
-                            cart.qty!.toInt(),
-                            cart.customerProduct!.price!.toInt(),
-                            cart.customerProduct!.product!.image.toString(),
-                            cart.customerProduct!.product!.productName
-                                .toString());
-                      },
-                    ),
+          ? Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: cartCon.listCart.length,
+                    padding: const EdgeInsets.only(bottom: 10),
+                    itemExtent: 90,
+                    itemBuilder: (BuildContext context, int index) {
+                      var cart = cartCon.listCart[index];
+                      return cartCard(
+                          cart.id!.toInt(),
+                          cart.idCustomer!.toInt(),
+                          cart.idCustomerProduct!.toInt(),
+                          cart.qty!.toInt(),
+                          cart.customerProduct!.price!.toInt(),
+                          cart.customerProduct!.product!.image.toString(),
+                          cart.customerProduct!.product!.productName
+                              .toString());
+                    },
                   ),
-                  const Divider(
-                    height: 2,
-                    thickness: 4,
-                    color: Color.fromRGBO(33, 33, 33, 1),
-                  ),
-                  const SizedBox(height: 10),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            "Payment Summary",
-                            style: TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0,
-                            ),
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ]),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ),
+                const Divider(
+                  height: 2,
+                  thickness: 4,
+                  color: Color.fromRGBO(33, 33, 33, 1),
+                ),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const Text(
-                          "Total Payment",
+                        Text(
+                          "Payment Summary",
                           style: TextStyle(
-                            fontSize: 18,
-                            color: Color.fromRGBO(114, 162, 138, 1),
+                            fontSize: 22,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0,
                           ),
                           textAlign: TextAlign.left,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        Text(
-                          formattedTotalPrice,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                            letterSpacing: 0,
-                          ),
-                          textAlign: TextAlign.left,
+                      ]),
+                ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Total Payment",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromRGBO(114, 162, 138, 1),
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0,
                         ),
-                      ],
-                    ),
+                        textAlign: TextAlign.left,
+                      ),
+                      Text(
+                        formattedTotalPrice,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          letterSpacing: 0,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 20),
-                  ButtonWidget(
-                    text: "ORDER",
-                    onTap: () {
-                      _showConfirmationDialog();
-                    },
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 20),
+                ButtonWidget(
+                  text: "ORDER",
+                  onTap: () {
+                    _showConfirmationDialog();
+                  },
+                ),
+              ],
             )
           : const Center(
               child: SpinKitWanderingCubes(
@@ -369,12 +383,12 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
             ),
             textAlign: TextAlign.center,
           ),
-          content: const Column(
+          content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                "Kantor Agency",
+              const Text(
+                "Recipient",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -383,8 +397,8 @@ class _KeranjangHolderPageState extends State<KeranjangHolderPage> {
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                "Jl.Lorem Ipsum",
-                style: TextStyle(
+                userAddress,
+                style: const TextStyle(
                     color: Colors.grey, fontWeight: FontWeight.normal),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,

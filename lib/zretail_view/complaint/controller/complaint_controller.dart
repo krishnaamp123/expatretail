@@ -5,9 +5,9 @@ import 'package:expatretail/core.dart';
 import 'package:expatretail/model/retail_model/complaint_model.dart';
 import 'package:flutter/material.dart';
 
-class ComplaintController extends GetxController implements GetxService {
+class ComplaintRetailController extends GetxController implements GetxService {
   var listComplaint = <ComplaintModel>[].obs;
-  final complaint = ComplaintService();
+  final complaint = ComplaintRetailService();
   var isLoading = false.obs;
 
   Future<void> getComplaint() async {

@@ -2,15 +2,15 @@ import 'package:expatretail/model/retail_model/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
-class OrderHolderPage extends StatefulWidget {
-  const OrderHolderPage({super.key});
+class OrderRetailHolderPage extends StatefulWidget {
+  const OrderRetailHolderPage({super.key});
 
   @override
-  State<OrderHolderPage> createState() => _OrderHolderState();
+  State<OrderRetailHolderPage> createState() => _OrderRetailHolderState();
 }
 
-class _OrderHolderState extends State<OrderHolderPage> {
-  var orderCon = Get.put(OrderController());
+class _OrderRetailHolderState extends State<OrderRetailHolderPage> {
+  var orderCon = Get.put(OrderRetailController());
   bool isDataLoaded = false;
 
   @override
@@ -19,7 +19,6 @@ class _OrderHolderState extends State<OrderHolderPage> {
     _loadData();
   }
 
-  // Fungsi untuk memuat data
   void _loadData() async {
     await _refreshData();
     await orderCon.getOrder();
@@ -28,7 +27,6 @@ class _OrderHolderState extends State<OrderHolderPage> {
     });
   }
 
-  // Function to handle refreshing
   Future<void> _refreshData() async {
     await orderCon.getOrder();
     setState(() {});
@@ -38,34 +36,35 @@ class _OrderHolderState extends State<OrderHolderPage> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: _refreshData,
+      color: const Color.fromRGBO(114, 162, 138, 1),
       child: isDataLoaded
-          ? SingleChildScrollView(
-              child: SizedBox(
-                height: 600,
-                width: MediaQuery.of(context).size.width,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: orderCon.listOrder.length,
-                  padding:
-                      const EdgeInsets.only(bottom: 10, left: 15, right: 15),
-                  itemExtent: 100,
-                  itemBuilder: (BuildContext context, int index) {
-                    var order = orderCon.listOrder[index];
-                    return orderCard(
-                        order.id!.toInt(),
-                        order.totalPrice!.toInt(),
-                        order.status.toString(),
-                        order.createdAt.toString(),
-                        order.details!.toList());
-                  },
-                ),
-              ),
+          ? Obx(
+              () => orderCon.isLoading.value
+                  ? const SpinKitWanderingCubes(
+                      color: Color.fromRGBO(114, 162, 138, 1),
+                      size: 50.0,
+                    )
+                  : ListView.builder(
+                      itemCount: orderCon.listOrder.length,
+                      padding: const EdgeInsets.only(
+                          bottom: 10, left: 15, right: 15),
+                      itemBuilder: (BuildContext context, int index) {
+                        var order = orderCon.listOrder[index];
+                        return orderCard(
+                            order.id!.toInt(),
+                            order.totalPrice!.toInt(),
+                            order.status.toString(),
+                            order.createdAt.toString(),
+                            order.details!.toList());
+                      },
+                    ),
             )
           : const Center(
               child: SpinKitWanderingCubes(
-              color: Color.fromRGBO(114, 162, 138, 1),
-              size: 50.0,
-            )),
+                color: Color.fromRGBO(114, 162, 138, 1),
+                size: 50.0,
+              ),
+            ),
     );
   }
 
@@ -78,12 +77,13 @@ class _OrderHolderState extends State<OrderHolderPage> {
     ).format(totalPrice);
     DateTime parsedDate = DateTime.parse(tanggalBuat);
     String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => OrderDetailPage(
+            builder: (context) => OrderRetailDetailPage(
               id: id,
               totalPrice: formattedtotalprice,
               status: status,

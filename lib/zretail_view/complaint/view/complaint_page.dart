@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 import 'package:expatretail/core.dart';
 
-class ComplaintPage extends StatefulWidget {
+class ComplaintRetailPage extends StatefulWidget {
   final Function()? onTap;
-  const ComplaintPage({super.key, this.onTap});
+  const ComplaintRetailPage({super.key, this.onTap});
 
   @override
-  State<ComplaintPage> createState() => _ComplaintPageState();
+  State<ComplaintRetailPage> createState() => _ComplaintRetailPageState();
 }
 
-class _ComplaintPageState extends State<ComplaintPage> {
+class _ComplaintRetailPageState extends State<ComplaintRetailPage> {
   final _formKey = GlobalKey<FormState>();
-  final ComplaintController complaintController = ComplaintController();
+  final ComplaintRetailController complaintController =
+      ComplaintRetailController();
   File? _profileImage;
   DateTime selectedDate = DateTime.now();
   int? userid;

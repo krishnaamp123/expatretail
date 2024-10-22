@@ -68,7 +68,7 @@ class LoginController {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
-    } else {
+    } else if (role == 'admin') {
       const snackBar = SnackBar(
         elevation: 0,
         behavior: SnackBarBehavior.floating,

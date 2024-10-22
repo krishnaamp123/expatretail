@@ -1,7 +1,7 @@
 import 'package:expatretail/core.dart';
 import 'package:http/http.dart' as http;
 
-class CustomerProductService {
+class CustomerProductRetailService {
   Future<http.Response> getCustomerProduct() async {
     var token = await getToken();
     if (token.isEmpty) {

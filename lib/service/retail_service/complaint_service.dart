@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:expatretail/core.dart';
 import 'package:http/http.dart' as http;
 
-class ComplaintService {
+class ComplaintRetailService {
   Future<http.Response> getComplaint() async {
     var token = await getToken();
     if (token.isEmpty) {

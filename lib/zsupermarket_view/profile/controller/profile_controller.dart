@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:expatretail/core.dart';
 import 'package:expatretail/model/retail_model/profile_model.dart';
 
-class ProfileRetailController extends GetxController implements GetxService {
+class ProfileSuperController extends GetxController implements GetxService {
   var listProfile = <ProfileModel>[].obs;
   final profile = ProfileRetailService();
   var isLoading = false.obs;

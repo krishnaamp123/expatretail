@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:expatretail/core.dart';
 import 'package:flutter/material.dart';
 
-class ProfileRetailPage extends StatefulWidget {
-  const ProfileRetailPage({super.key});
+class ProfileSuperPage extends StatefulWidget {
+  const ProfileSuperPage({super.key});
 
   @override
-  State<ProfileRetailPage> createState() => _ProfileRetailPageState();
+  State<ProfileSuperPage> createState() => _ProfilePageSSupertate();
 }
 
-class _ProfileRetailPageState extends State<ProfileRetailPage> {
-  var profileCon = Get.put(ProfileRetailController());
+class _ProfilePageSSupertate extends State<ProfileSuperPage> {
+  var profileCon = Get.put(ProfileSuperController());
   bool isDataLoaded = false;
   int? userid;
 

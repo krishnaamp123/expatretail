@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:expatretail/core.dart';
 import 'package:http/http.dart' as http;
 
-class OrderService {
+class OrderRetailService {
   Future<http.Response> getOrder() async {
     var token = await getToken();
     if (token.isEmpty) {

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
-class ComplaintHistoryPage extends StatefulWidget {
-  const ComplaintHistoryPage({super.key});
+class ComplaintRetailHistoryPage extends StatefulWidget {
+  const ComplaintRetailHistoryPage({super.key});
 
   @override
-  State<ComplaintHistoryPage> createState() => _ComplaintHistoryPageState();
+  State<ComplaintRetailHistoryPage> createState() =>
+      _ComplaintRetailHistoryPageState();
 }
 
-class _ComplaintHistoryPageState extends State<ComplaintHistoryPage> {
-  var complaintCon = Get.put(ComplaintController());
+class _ComplaintRetailHistoryPageState
+    extends State<ComplaintRetailHistoryPage> {
+  var complaintCon = Get.put(ComplaintRetailController());
   bool isDataLoaded = false;
 
   @override
@@ -37,33 +39,26 @@ class _ComplaintHistoryPageState extends State<ComplaintHistoryPage> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: _refreshData,
+      color: const Color.fromRGBO(114, 162, 138, 1),
       child: isDataLoaded
-          ? Container(
-              color: Colors.black,
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: SizedBox(
-                  height: 700,
-                  width: MediaQuery.of(context).size.width,
-                  child: Obx(
-                    () => complaintCon.isLoading.value
-                        ? const SpinKitWanderingCubes(
-                            color: Color.fromRGBO(114, 162, 138, 1),
-                            size: 50.0,
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: complaintCon.listComplaint.length,
-                            padding: const EdgeInsets.all(10),
-                            itemBuilder: (BuildContext context, int index) {
-                              var complaint = complaintCon.listComplaint[index];
-                              return complaintlistCard(
-                                  complaint.complaintDate.toString(),
-                                  complaint.productionCode.toString(),
-                                  complaint.description.toString());
-                            },
-                          ),
-                  )),
+          ? Obx(
+              () => complaintCon.isLoading.value
+                  ? const SpinKitWanderingCubes(
+                      color: Color.fromRGBO(114, 162, 138, 1),
+                      size: 50.0,
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: complaintCon.listComplaint.length,
+                      padding: const EdgeInsets.all(10),
+                      itemBuilder: (BuildContext context, int index) {
+                        var complaint = complaintCon.listComplaint[index];
+                        return complaintlistCard(
+                            complaint.complaintDate.toString(),
+                            complaint.productionCode.toString(),
+                            complaint.description.toString());
+                      },
+                    ),
             )
           : const Center(
               child: SpinKitWanderingCubes(

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
-class MenuDetailPage extends StatefulWidget {
+class MenuRetailDetailPage extends StatefulWidget {
   final int id;
   final int price;
   final String productname;
@@ -12,7 +12,7 @@ class MenuDetailPage extends StatefulWidget {
   final String packagingname;
   final int weight;
 
-  const MenuDetailPage(
+  const MenuRetailDetailPage(
       {Key? key,
       required this.id,
       required this.price,
@@ -24,11 +24,11 @@ class MenuDetailPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<MenuDetailPage> createState() => _MenuDetailPageState();
+  State<MenuRetailDetailPage> createState() => _MenuRetailDetailPageState();
 }
 
-class _MenuDetailPageState extends State<MenuDetailPage> {
-  final CartController cartController = CartController();
+class _MenuRetailDetailPageState extends State<MenuRetailDetailPage> {
+  final CartRetailController cartController = CartRetailController();
   int? userid;
   int jumlahitem = 1;
 

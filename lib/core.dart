@@ -35,6 +35,8 @@ export 'package:expatretail/authentication/view/navigation_page.dart';
 export 'package:expatretail/authentication/view/login_page.dart';
 export 'package:expatretail/authentication/controller/login_controller.dart';
 
+//--<< RETAIL APP >>--\\
+
 //DASHBOARD PAGE
 export 'package:expatretail/a%20draft/dashboard/view/dashboard_page.dart';
 
@@ -69,6 +71,12 @@ export 'package:expatretail/zretail_view/order/view/orderdetail_page.dart';
 export 'package:expatretail/service/retail_service/profile_service.dart';
 export 'package:expatretail/zretail_view/profile/controller/profile_controller.dart';
 export 'package:expatretail/zretail_view/profile/view/profile_page.dart';
+
+//--<< SUPERMARKET APP >>--\\
+
+//PROFILE PAGE
+export 'package:expatretail/zsupermarket_view/profile/controller/profile_controller.dart';
+export 'package:expatretail/zsupermarket_view/profile/view/profile_page.dart';
 
 //WIDGET
 export 'package:expatretail/widget/text_widget.dart';

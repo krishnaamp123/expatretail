@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
-class ItemHolderPage extends StatefulWidget {
-  const ItemHolderPage({
+class ItemRetailHolderPage extends StatefulWidget {
+  const ItemRetailHolderPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ItemHolderPage> createState() => _ItemHolderPageState();
+  State<ItemRetailHolderPage> createState() => _ItemRetailHolderPageState();
 }
 
-class _ItemHolderPageState extends State<ItemHolderPage> {
-  var menuCon = Get.put(MenuItemController());
+class _ItemRetailHolderPageState extends State<ItemRetailHolderPage> {
+  var menuCon = Get.put(MenuRetailItemController());
   bool isDataLoaded = false;
 
   @override
@@ -39,45 +39,32 @@ class _ItemHolderPageState extends State<ItemHolderPage> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: _refreshData,
+      color: const Color.fromRGBO(114, 162, 138, 1),
       child: isDataLoaded
-          ? SingleChildScrollView(
-              child: Card(
-                color: const Color.fromRGBO(26, 26, 26, 1),
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: SizedBox(
-                  height: 700,
-                  width: MediaQuery.of(context).size.width,
-                  child: Obx(
-                    () => menuCon.isLoading.value
-                        ? const SpinKitWanderingCubes(
-                            color: Color.fromRGBO(114, 162, 138, 1),
-                            size: 50.0,
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: menuCon.listMenu.length,
-                            padding: const EdgeInsets.only(bottom: 10),
-                            itemExtent: 130,
-                            itemBuilder: (BuildContext context, int index) {
-                              var menu = menuCon.listMenu[index];
-                              return menuCard(
-                                menu.id!.toInt(),
-                                menu.price!.toInt(),
-                                menu.product!.productName.toString(),
-                                menu.product!.image.toString(),
-                                menu.product!.descriprtion.toString(),
-                                menu.product!.packaging!.packagingName
-                                    .toString(),
-                                menu.product!.packaging!.weight!.toInt(),
-                              );
-                            },
-                          ),
-                  ),
-                ),
-              ),
+          ? Obx(
+              () => menuCon.isLoading.value
+                  ? const SpinKitWanderingCubes(
+                      color: Color.fromRGBO(114, 162, 138, 1),
+                      size: 50.0,
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: menuCon.listMenu.length,
+                      padding: const EdgeInsets.only(bottom: 10),
+                      itemExtent: 130,
+                      itemBuilder: (BuildContext context, int index) {
+                        var menu = menuCon.listMenu[index];
+                        return menuCard(
+                          menu.id!.toInt(),
+                          menu.price!.toInt(),
+                          menu.product!.productName.toString(),
+                          menu.product!.image.toString(),
+                          menu.product!.descriprtion.toString(),
+                          menu.product!.packaging!.packagingName.toString(),
+                          menu.product!.packaging!.weight!.toInt(),
+                        );
+                      },
+                    ),
             )
           : const Center(
               child: SpinKitWanderingCubes(
@@ -109,7 +96,7 @@ class _ItemHolderPageState extends State<ItemHolderPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MenuDetailPage(
+            builder: (context) => MenuRetailDetailPage(
               id: id,
               price: price,
               productname: productname,
@@ -208,7 +195,7 @@ class _ItemHolderPageState extends State<ItemHolderPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MenuDetailPage(
+                                    builder: (context) => MenuRetailDetailPage(
                                       id: id,
                                       price: price,
                                       productname: productname,

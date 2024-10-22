@@ -1,7 +1,7 @@
 import 'package:expatretail/core.dart';
 import 'package:http/http.dart' as http;
 
-class ProfileService {
+class ProfileRetailService {
   Future<http.Response> getProfile(int id) async {
     var token = await getToken();
     var url = Uri.parse('$baseURL/profile/$id');

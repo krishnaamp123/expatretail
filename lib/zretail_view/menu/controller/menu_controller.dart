@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:expatretail/core.dart';
 export 'package:expatretail/model/retail_model/customerproduct_model.dart';
 
-class MenuItemController extends GetxController implements GetxService {
+class MenuRetailItemController extends GetxController implements GetxService {
   var listMenu = <CustomerProductModel>[].obs;
-  final menu = CustomerProductService();
+  final menu = CustomerProductRetailService();
   var isLoading = false.obs;
 
   Future<void> getMenu() async {

@@ -1,40 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
-class OrderPage extends StatefulWidget {
-  const OrderPage({Key? key}) : super(key: key);
+class OrderRetailPage extends StatefulWidget {
+  const OrderRetailPage({Key? key}) : super(key: key);
 
   @override
-  State<OrderPage> createState() => OrderPageState();
+  State<OrderRetailPage> createState() => OrderRetailPageState();
 }
 
-class OrderPageState extends State<OrderPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class OrderRetailPageState extends State<OrderRetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBarTok(context, "ORDER HISTORY"),
       backgroundColor: Colors.black,
-      body: SafeArea(
-        child: Container(
-          color: Colors.black,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: const SingleChildScrollView(
-            child: Column(children: [
-              Divider(
-                height: 2,
-                thickness: 4,
-                color: Color.fromRGBO(33, 33, 33, 1),
-              ),
-              SizedBox(height: 10),
-              OrderHolderPage(),
-            ]),
-          ),
+      body: const SafeArea(
+        child: Column(
+          children: [
+            Divider(
+              height: 2,
+              thickness: 4,
+              color: Color.fromRGBO(33, 33, 33, 1),
+            ),
+            SizedBox(height: 10),
+            Expanded(
+              // Menggunakan Expanded di sini
+              child: OrderRetailHolderPage(),
+            ),
+          ],
         ),
       ),
     );

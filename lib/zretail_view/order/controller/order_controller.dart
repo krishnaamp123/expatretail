@@ -3,13 +3,13 @@ import 'package:expatretail/core.dart';
 import 'package:expatretail/model/retail_model/cart_model.dart';
 import 'package:expatretail/model/retail_model/order_model.dart';
 
-class OrderController extends GetxController implements GetxService {
+class OrderRetailController extends GetxController implements GetxService {
   var listOrder = <OrderModel>[].obs;
   var listCart = <CartModel>[].obs;
   var isLoading = false.obs;
 
-  final orderService = OrderService();
-  final cartService = CartService();
+  final orderService = OrderRetailService();
+  final cartService = CartRetailService();
 
   Future<void> getOrder() async {
     isLoading.value = true;

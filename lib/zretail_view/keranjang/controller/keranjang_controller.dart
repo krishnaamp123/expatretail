@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:expatretail/core.dart';
 import 'package:expatretail/model/retail_model/cart_model.dart';
 
-class CartController extends GetxController implements GetxService {
+class CartRetailController extends GetxController implements GetxService {
   var listCart = <CartModel>[].obs;
-  final cart = CartService();
+  final cart = CartRetailService();
   var isLoading = false.obs;
 
   Future<void> getCart() async {
