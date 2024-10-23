@@ -17,6 +17,9 @@ class MyExpatApp extends StatelessWidget {
       home: CheckAuth(),
       theme: ThemeData(
         primarySwatch: Colors.grey,
+        primaryColor: Colors.black,
+        primaryColorLight: const Color.fromRGBO(114, 162, 138, 1),
+        primaryColorDark: const Color.fromRGBO(114, 162, 138, 1),
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color.fromRGBO(114, 162, 138, 1),
           selectionColor: Color.fromRGBO(114, 162, 138, 1),
