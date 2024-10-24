@@ -2,9 +2,11 @@ class ComplaintModel {
   int? id;
   int? idCustomer;
   String? complaintDate;
-  String? image;
+  List<Files>? files;
   String? productionCode;
   String? description;
+  String? status;
+  String? solution;
   String? createdAt;
   String? updatedAt;
   Customer? customer;
@@ -13,9 +15,11 @@ class ComplaintModel {
       {this.id,
       this.idCustomer,
       this.complaintDate,
-      this.image,
+      this.files,
       this.productionCode,
       this.description,
+      this.status,
+      this.solution,
       this.createdAt,
       this.updatedAt,
       this.customer});
@@ -24,9 +28,16 @@ class ComplaintModel {
     id = json['id'];
     idCustomer = json['id_customer'];
     complaintDate = json['complaint_date'];
-    image = json['image'];
+    if (json['files'] != null) {
+      files = <Files>[];
+      json['files'].forEach((v) {
+        files!.add(new Files.fromJson(v));
+      });
+    }
     productionCode = json['production_code'];
     description = json['description'];
+    status = json['status'];
+    solution = json['solution'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     customer = json['customer'] != null
@@ -39,9 +50,13 @@ class ComplaintModel {
     data['id'] = this.id;
     data['id_customer'] = this.idCustomer;
     data['complaint_date'] = this.complaintDate;
-    data['image'] = this.image;
+    if (this.files != null) {
+      data['files'] = this.files!.map((v) => v.toJson()).toList();
+    }
     data['production_code'] = this.productionCode;
     data['description'] = this.description;
+    data['status'] = this.status;
+    data['solution'] = this.solution;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     if (this.customer != null) {
@@ -51,15 +66,41 @@ class ComplaintModel {
   }
 }
 
+class Files {
+  int? id;
+  String? imagePath;
+  String? createdAt;
+  String? updatedAt;
+
+  Files({this.id, this.imagePath, this.createdAt, this.updatedAt});
+
+  Files.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    imagePath = json['image_path'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['image_path'] = this.imagePath;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
 class Customer {
   int? id;
   int? idGroup;
-  String? email;
+  String? username;
   String? password;
   String? customerName;
   String? picName;
   String? picPhone;
   String? address;
+  String? role;
   String? createdAt;
   String? updatedAt;
   Company? company;
@@ -67,12 +108,13 @@ class Customer {
   Customer(
       {this.id,
       this.idGroup,
-      this.email,
+      this.username,
       this.password,
       this.customerName,
       this.picName,
       this.picPhone,
       this.address,
+      this.role,
       this.createdAt,
       this.updatedAt,
       this.company});
@@ -80,12 +122,13 @@ class Customer {
   Customer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     idGroup = json['id_group'];
-    email = json['email'];
+    username = json['username'];
     password = json['password'];
     customerName = json['customer_name'];
     picName = json['pic_name'];
     picPhone = json['pic_phone'];
     address = json['address'];
+    role = json['role'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     company =
@@ -96,12 +139,13 @@ class Customer {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['id_group'] = this.idGroup;
-    data['email'] = this.email;
+    data['username'] = this.username;
     data['password'] = this.password;
     data['customer_name'] = this.customerName;
     data['pic_name'] = this.picName;
     data['pic_phone'] = this.picPhone;
     data['address'] = this.address;
+    data['role'] = this.role;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     if (this.company != null) {

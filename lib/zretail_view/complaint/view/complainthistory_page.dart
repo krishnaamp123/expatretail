@@ -56,7 +56,9 @@ class _ComplaintRetailHistoryPageState
                         return complaintlistCard(
                             complaint.complaintDate.toString(),
                             complaint.productionCode.toString(),
-                            complaint.description.toString());
+                            complaint.description.toString(),
+                            complaint.status.toString(),
+                            complaint.solution.toString());
                       },
                     ),
             )
@@ -68,10 +70,11 @@ class _ComplaintRetailHistoryPageState
     );
   }
 
-  Widget complaintlistCard(
-      String complaintDate, String productionCode, String description) {
+  Widget complaintlistCard(String complaintDate, String productionCode,
+      String description, String status, String solution) {
     DateTime parsedDate = DateTime.parse(complaintDate);
     String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+    Color statusColor = _getStatusColor(status);
     return Card(
       color: Colors.black,
       elevation: 2,
@@ -86,24 +89,28 @@ class _ComplaintRetailHistoryPageState
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextWidget(
-                formattedDate,
-                15,
-                Colors.white,
-                FontWeight.normal,
-                letterSpace: 0,
-                textAlign: TextAlign.left,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              TextWidget(
-                productionCode,
-                16,
-                const Color.fromRGBO(114, 162, 138, 1),
-                FontWeight.normal,
-                letterSpace: 0,
-                textAlign: TextAlign.left,
+              Row(
+                children: [
+                  TextWidget(
+                    formattedDate,
+                    15,
+                    Colors.white,
+                    FontWeight.normal,
+                    letterSpace: 0,
+                    textAlign: TextAlign.left,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  TextWidget(
+                    productionCode,
+                    15,
+                    const Color.fromRGBO(114, 162, 138, 1),
+                    FontWeight.normal,
+                    letterSpace: 0,
+                    textAlign: TextAlign.left,
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 5,
@@ -117,8 +124,29 @@ class _ComplaintRetailHistoryPageState
                 textAlign: TextAlign.left,
               ),
               const SizedBox(
-                height: 5,
+                height: 2,
               ),
+              TextWidget(
+                status,
+                16,
+                statusColor,
+                FontWeight.normal,
+                letterSpace: 0,
+                textAlign: TextAlign.left,
+              ),
+              if (status == 'solved') ...[
+                const SizedBox(
+                  height: 2,
+                ),
+                TextWidget(
+                  solution,
+                  15,
+                  Colors.white,
+                  FontWeight.normal,
+                  letterSpace: 0,
+                  textAlign: TextAlign.left,
+                ),
+              ],
               const Divider(
                 height: 10,
                 thickness: 1,
@@ -129,5 +157,16 @@ class _ComplaintRetailHistoryPageState
         ),
       ),
     );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'unsolved':
+        return Colors.orange;
+      case 'solved':
+        return const Color.fromRGBO(114, 162, 138, 1);
+      default:
+        return const Color.fromRGBO(26, 26, 26, 1);
+    }
   }
 }

@@ -142,7 +142,7 @@ class _ProfileRetailPageState extends State<ProfileRetailPage> {
                                     ),
                                     const SizedBox(height: 20),
                                     const Text(
-                                      'Email :',
+                                      'Username :',
                                       style: TextStyle(
                                         color: Color.fromRGBO(114, 162, 138, 1),
                                         fontSize: 15,
@@ -152,7 +152,7 @@ class _ProfileRetailPageState extends State<ProfileRetailPage> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      user.email!,
+                                      user.username!,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,

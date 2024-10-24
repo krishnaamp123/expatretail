@@ -8,6 +8,7 @@ class OrderRetailDetailPage extends StatefulWidget {
   final String status;
   final String tanggalBuat;
   final List<Details> details;
+  final int displayNumber;
 
   const OrderRetailDetailPage(
       {Key? key,
@@ -15,7 +16,8 @@ class OrderRetailDetailPage extends StatefulWidget {
       required this.totalPrice,
       required this.status,
       required this.tanggalBuat,
-      required this.details})
+      required this.details,
+      required this.displayNumber})
       : super(key: key);
 
   @override
@@ -31,11 +33,11 @@ class OrderRetailDetailPageState extends State<OrderRetailDetailPage> {
   @override
   Widget build(BuildContext context) {
     List<Details> details = widget.details;
-    int id = widget.id;
     String totalPrice = widget.totalPrice;
     String tanggalBuat = widget.tanggalBuat;
     String status = widget.status;
     Color statusColor = _getStatusColor(status);
+    int displayNumber = widget.displayNumber;
     return Scaffold(
       appBar: buildAppBar(context, "ORDER DETAIL"),
       backgroundColor: Colors.black,
@@ -53,7 +55,7 @@ class OrderRetailDetailPageState extends State<OrderRetailDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextWidget(
-                      "ORDER $id",
+                      "ORDER $displayNumber",
                       18,
                       Colors.white,
                       FontWeight.bold,
@@ -366,9 +368,9 @@ class OrderRetailDetailPageState extends State<OrderRetailDetailPage> {
 
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'unpaid':
-        return Colors.red;
-      case 'paid':
+      case 'unconfirmed':
+        return Colors.orange;
+      case 'confirmed':
         return const Color.fromRGBO(114, 162, 138, 1);
       default:
         return const Color.fromRGBO(26, 26, 26, 1);

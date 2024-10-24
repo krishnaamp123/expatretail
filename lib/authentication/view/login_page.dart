@@ -71,14 +71,14 @@ class _LoginPageState extends State<LoginPage> {
 
                 //username textfield
                 TextFieldWidget(
-                  controller: loginController.emailController,
-                  upText: 'Email Address',
-                  hintText: 'Enter your email address',
+                  controller: loginController.usernameController,
+                  upText: 'Username',
+                  hintText: 'Enter your username',
                   obscureText: false,
-                  validator: loginController.validateEmail,
+                  validator: loginController.validateUsername,
                   onChanged: (_) {
                     setState(() {
-                      loginController.emailError = null;
+                      loginController.usernameError = null;
                     });
                   },
                 ),

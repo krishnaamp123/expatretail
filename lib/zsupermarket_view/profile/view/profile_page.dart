@@ -152,7 +152,7 @@ class _ProfilePageSSupertate extends State<ProfileSuperPage> {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      user.email!,
+                                      user.username!,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 18,

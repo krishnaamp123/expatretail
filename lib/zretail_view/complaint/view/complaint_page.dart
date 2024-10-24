@@ -16,7 +16,8 @@ class _ComplaintRetailPageState extends State<ComplaintRetailPage> {
   final _formKey = GlobalKey<FormState>();
   final ComplaintRetailController complaintController =
       ComplaintRetailController();
-  File? _profileImage;
+  // File? _profileImage;
+  List<File>? _profileImages; // Use List<File> to store multiple images
   DateTime selectedDate = DateTime.now();
   int? userid;
 
@@ -44,30 +45,62 @@ class _ComplaintRetailPageState extends State<ComplaintRetailPage> {
 
   Future<void> _pickImage() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
+      final List<XFile>? images = await ImagePicker().pickMultiImage();
+      if (images == null || images.isEmpty) return;
 
       // Memastikan ukuran file tidak terlalu besar
-      final bytes = await image.readAsBytes();
       const maxSizeInBytes = 2 * 1024 * 1024; // Contoh batas ukuran 2MB
-      if (bytes.lengthInBytes > maxSizeInBytes) {
-        print('File terlalu besar. Ukuran file maksimal adalah 2MB.');
-        return;
+      List<File> selectedImages = [];
+
+      for (var image in images) {
+        final bytes = await image.readAsBytes();
+        if (bytes.lengthInBytes > maxSizeInBytes) {
+          print(
+              'File ${image.name} terlalu besar. Ukuran file maksimal adalah 2MB.');
+          continue; // Skip this image
+        }
+
+        final directory = await getApplicationDocumentsDirectory();
+        final name = path.basename(image.path);
+        final imageFile = File('${directory.path}/$name');
+        final newImage = await File(image.path).copy(imageFile.path);
+        selectedImages.add(newImage);
       }
 
-      // Jika ukuran file sesuai, lanjutkan proses
-      final directory = await getApplicationDocumentsDirectory();
-      final name = path.basename(image.path);
-      final imageFile = File('${directory.path}/$name');
-      final newImage = await File(image.path).copy(imageFile.path);
-
       setState(() {
-        _profileImage = newImage; // Simpan gambar yang dipilih
+        _profileImages = selectedImages; // Simpan gambar yang dipilih
       });
     } catch (e) {
-      print('Error picking image: $e');
+      print('Error picking images: $e');
     }
   }
+
+  // Future<void> _pickImage() async {
+  //   try {
+  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //     if (image == null) return;
+
+  //     // Memastikan ukuran file tidak terlalu besar
+  //     final bytes = await image.readAsBytes();
+  //     const maxSizeInBytes = 2 * 1024 * 1024; // Contoh batas ukuran 2MB
+  //     if (bytes.lengthInBytes > maxSizeInBytes) {
+  //       print('File terlalu besar. Ukuran file maksimal adalah 2MB.');
+  //       return;
+  //     }
+
+  //     // Jika ukuran file sesuai, lanjutkan proses
+  //     final directory = await getApplicationDocumentsDirectory();
+  //     final name = path.basename(image.path);
+  //     final imageFile = File('${directory.path}/$name');
+  //     final newImage = await File(image.path).copy(imageFile.path);
+
+  //     setState(() {
+  //       _profileImage = newImage; // Simpan gambar yang dipilih
+  //     });
+  //   } catch (e) {
+  //     print('Error picking image: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -76,26 +109,37 @@ class _ComplaintRetailPageState extends State<ComplaintRetailPage> {
       backgroundColor: Colors.black,
       body: Form(
         key: _formKey,
-        child: Container(
-          color: Colors.black,
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 10),
-                Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 10),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Stack(
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(15),
-                        child: _profileImage != null
-                            ? Image.file(
-                                _profileImage!,
-                                fit: BoxFit.cover,
-                                width: 200,
-                                height: 200,
+                        child: _profileImages != null &&
+                                _profileImages!.isNotEmpty
+                            ? GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:
+                                      _profileImages!.length == 1 ? 1 : 2,
+                                  crossAxisSpacing: 4,
+                                  mainAxisSpacing: 4,
+                                ),
+                                itemCount: _profileImages!.length,
+                                itemBuilder: (context, index) {
+                                  return Image.file(
+                                    _profileImages![index],
+                                    fit: BoxFit.cover,
+                                  );
+                                },
                               )
                             : Image.asset(
                                 'lib/image/uploadphoto.png',
@@ -115,124 +159,125 @@ class _ComplaintRetailPageState extends State<ComplaintRetailPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
+              ),
 
-                // Tanggal dan kode barang
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 100),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const TextWidget(
-                        "Complaint Date",
-                        13,
-                        Colors.white,
-                        FontWeight.normal,
-                        letterSpace: 0,
-                      ),
-                      const SizedBox(height: 5),
-                      GestureDetector(
-                        onTap: () async {
-                          final DateTime? dateTime = await showDatePicker(
-                            context: context,
-                            initialDate: selectedDate,
-                            firstDate: DateTime(2024),
-                            lastDate: DateTime(2025),
-                            builder: (BuildContext context, Widget? child) {
-                              return Theme(
-                                data: ThemeData(
-                                  colorScheme: const ColorScheme.light(
-                                    primary: Color.fromRGBO(114, 162, 138, 1),
-                                    onPrimary: Colors.white,
-                                    onSurface: Colors.black,
-                                  ),
-                                  dialogBackgroundColor: Colors.white,
+              const SizedBox(height: 10),
+
+              // Tanggal dan kode barang
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 100),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const TextWidget(
+                      "Complaint Date",
+                      13,
+                      Colors.white,
+                      FontWeight.normal,
+                      letterSpace: 0,
+                    ),
+                    const SizedBox(height: 5),
+                    GestureDetector(
+                      onTap: () async {
+                        final DateTime? dateTime = await showDatePicker(
+                          context: context,
+                          initialDate: selectedDate,
+                          firstDate: DateTime(2024),
+                          lastDate: DateTime(2025),
+                          builder: (BuildContext context, Widget? child) {
+                            return Theme(
+                              data: ThemeData(
+                                colorScheme: const ColorScheme.light(
+                                  primary: Color.fromRGBO(114, 162, 138, 1),
+                                  onPrimary: Colors.white,
+                                  onSurface: Colors.black,
                                 ),
-                                child: child!,
-                              );
-                            },
-                          );
-                          if (dateTime != null) {
-                            setState(() {
-                              selectedDate = dateTime;
-                            });
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 12),
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(114, 162, 138, 1),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "${selectedDate.year} - ${selectedDate.month} - ${selectedDate.day}",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                dialogBackgroundColor: Colors.white,
                               ),
+                              child: child!,
+                            );
+                          },
+                        );
+                        if (dateTime != null) {
+                          setState(() {
+                            selectedDate = dateTime;
+                          });
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(114, 162, 138, 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "${selectedDate.year} - ${selectedDate.month} - ${selectedDate.day}",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
+              ),
+              const SizedBox(height: 20),
 
-                // Production code textfield
-                TextFieldWidget(
-                  controller: complaintController.kodeproduksiController,
-                  upText: 'Production Code',
-                  hintText: 'Enter your production code',
-                  obscureText: false,
-                  validator: complaintController.validateKodeProduksi,
-                  onChanged: (_) {
-                    setState(() {
-                      complaintController.kodeproduksiError = null;
-                    });
-                  },
-                ),
-                const SizedBox(height: 10),
+              // Production code textfield
+              TextFieldWidget(
+                controller: complaintController.kodeproduksiController,
+                upText: 'Production Code',
+                hintText: 'Enter your production code',
+                obscureText: false,
+                validator: complaintController.validateKodeProduksi,
+                onChanged: (_) {
+                  setState(() {
+                    complaintController.kodeproduksiError = null;
+                  });
+                },
+              ),
+              const SizedBox(height: 10),
 
-                // Complaint textfield
-                TextFieldComplaint(
-                  controller: complaintController.descriptionController,
-                  upText: 'Complaint Description',
-                  hintText: 'Enter your complaint',
-                  obscureText: false,
-                  validator: complaintController.validateDescription,
-                  onChanged: (_) {
-                    setState(() {
-                      complaintController.descriptionError = null;
-                    });
-                  },
-                ),
+              // Complaint textfield
+              TextFieldComplaint(
+                controller: complaintController.descriptionController,
+                upText: 'Complaint Description',
+                hintText: 'Enter your complaint',
+                obscureText: false,
+                validator: complaintController.validateDescription,
+                onChanged: (_) {
+                  setState(() {
+                    complaintController.descriptionError = null;
+                  });
+                },
+              ),
 
-                const SizedBox(height: 30),
+              const SizedBox(height: 30),
 
-                // Send button
-                ButtonWidget(
-                  text: "SEND",
-                  onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (_profileImage == null) {
-                        print("Error: No image selected.");
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text(
-                                "Please select an image before submitting.")));
-                        return;
-                      }
-                      _showConfirmationDialog();
+              // Send button
+              ButtonWidget(
+                text: "SEND",
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    if (_profileImages == null || _profileImages!.isEmpty) {
+                      print("Error: No image selected.");
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                              "Please select at least one image before submitting.")));
+                      return;
                     }
-                  },
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
+                    _showConfirmationDialog();
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+            ],
           ),
         ),
       ),
@@ -320,7 +365,7 @@ class _ComplaintRetailPageState extends State<ComplaintRetailPage> {
                 ElevatedButton(
                   onPressed: () {
                     complaintController.sendComplaint(
-                        userid!, _profileImage!, selectedDate);
+                        userid!, _profileImages!, selectedDate);
                     const snackBar = SnackBar(
                       elevation: 0,
                       behavior: SnackBarBehavior.floating,

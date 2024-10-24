@@ -4,44 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
 class LoginController {
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  String? emailError;
+  String? usernameError;
   String? passwordError;
 
-  String? validateEmail(String? emailValue) {
-    if (emailValue == null || emailValue.isEmpty) {
-      return 'Masukkan email';
-    } else {
-      final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-      if (!emailRegex.hasMatch(emailValue)) {
-        return 'Format email tidak valid';
-      }
+  String? validateUsername(String? usernameValue) {
+    if (usernameValue == null || usernameValue.isEmpty) {
+      return 'Enter your username';
     }
     return null;
   }
 
   String? validatePassword(String? passwordValue) {
     if (passwordValue == null || passwordValue.isEmpty) {
-      return 'Masukkan password';
+      return 'Enter your password';
     } else if (passwordValue.length < 6) {
-      return 'Password harus memiliki minimal 6 karakter';
+      return 'Password must have at least 6 characters';
     }
     return null;
   }
 
   bool validateForm() {
-    final emailValue = emailController.text;
+    final usernameValue = usernameController.text;
     final passwordValue = passwordController.text;
 
-    final emailValidation = validateEmail(emailValue);
+    final usernameValidation = validateUsername(usernameValue);
     final passwordValidation = validatePassword(passwordValue);
 
-    emailError = emailValidation;
+    usernameError = usernameValidation;
     passwordError = passwordValidation;
 
-    return emailValidation == null && passwordValidation == null;
+    return usernameValidation == null && passwordValidation == null;
   }
 
   void navigateBasedOnRole(BuildContext context, String role) {
@@ -148,7 +143,7 @@ class LoginController {
 
   Future<bool> login() async {
     var data = {
-      'email': emailController.text,
+      'username': usernameController.text,
       'password': passwordController.text,
     };
 

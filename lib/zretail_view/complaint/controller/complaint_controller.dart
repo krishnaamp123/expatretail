@@ -28,7 +28,7 @@ class ComplaintRetailController extends GetxController implements GetxService {
   }
 
   Future<void> sendComplaint(
-      int id, File profileImage, DateTime selectedDate) async {
+      int id, List<File> profileImages, DateTime selectedDate) async {
     if (validateForm()) {
       try {
         var response = await complaint.postComplaint(
@@ -37,7 +37,7 @@ class ComplaintRetailController extends GetxController implements GetxService {
               "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
           productionCode: kodeproduksiController.text,
           description: descriptionController.text,
-          file: profileImage,
+          files: profileImages, // Pass the list of images
         );
 
         print('Response status code: ${response.statusCode}');
@@ -53,6 +53,33 @@ class ComplaintRetailController extends GetxController implements GetxService {
       }
     }
   }
+
+  // Future<void> sendComplaint(
+  //     int id, File profileImage, DateTime selectedDate) async {
+  //   if (validateForm()) {
+  //     try {
+  //       var response = await complaint.postComplaint(
+  //         idCustomer: id,
+  //         complaintDate:
+  //             "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}",
+  //         productionCode: kodeproduksiController.text,
+  //         description: descriptionController.text,
+  //         file: profileImage,
+  //       );
+
+  //       print('Response status code: ${response.statusCode}');
+  //       print('Response body: ${response.body}');
+
+  //       if (response.statusCode == 200 || response.statusCode == 201) {
+  //         print("Complaint successfully sent!");
+  //       } else {
+  //         print("Failed to send complaint: ${response.body}");
+  //       }
+  //     } catch (e) {
+  //       print("Error while sending complaint: $e");
+  //     }
+  //   }
+  // }
 
   final TextEditingController kodeproduksiController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();

@@ -50,12 +50,14 @@ class _OrderRetailHolderState extends State<OrderRetailHolderPage> {
                           bottom: 10, left: 15, right: 15),
                       itemBuilder: (BuildContext context, int index) {
                         var order = orderCon.listOrder[index];
+                        int displayNumber = index + 1;
                         return orderCard(
                             order.id!.toInt(),
                             order.totalPrice!.toInt(),
                             order.status.toString(),
                             order.createdAt.toString(),
-                            order.details!.toList());
+                            order.details!.toList(),
+                            displayNumber);
                       },
                     ),
             )
@@ -69,7 +71,7 @@ class _OrderRetailHolderState extends State<OrderRetailHolderPage> {
   }
 
   Widget orderCard(int id, int totalPrice, String status, String tanggalBuat,
-      List<Details> details) {
+      List<Details> details, int displayNumber) {
     String formattedtotalprice = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp.',
@@ -89,6 +91,7 @@ class _OrderRetailHolderState extends State<OrderRetailHolderPage> {
               status: status,
               tanggalBuat: formattedDate,
               details: details,
+              displayNumber: displayNumber,
             ),
           ),
         );
@@ -112,7 +115,7 @@ class _OrderRetailHolderState extends State<OrderRetailHolderPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Order $id",
+                      "Order $displayNumber",
                       style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,

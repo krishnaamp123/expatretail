@@ -1,7 +1,7 @@
 class ProfileModel {
   int? id;
   int? idGroup;
-  String? email;
+  String? username;
   String? password;
   String? customerName;
   String? picName;
@@ -14,7 +14,7 @@ class ProfileModel {
   ProfileModel(
       {this.id,
       this.idGroup,
-      this.email,
+      this.username,
       this.password,
       this.customerName,
       this.picName,
@@ -27,7 +27,7 @@ class ProfileModel {
   ProfileModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     idGroup = json['id_group'];
-    email = json['email'];
+    username = json['username'];
     password = json['password'];
     customerName = json['customer_name'];
     picName = json['pic_name'];
@@ -43,7 +43,7 @@ class ProfileModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['id_group'] = this.idGroup;
-    data['email'] = this.email;
+    data['username'] = this.username;
     data['password'] = this.password;
     data['customer_name'] = this.customerName;
     data['pic_name'] = this.picName;
