@@ -76,131 +76,152 @@ class _ProfileRetailPageState extends State<ProfileRetailPage> {
                           size: 50.0,
                         ),
                       )
-                    : SafeArea(
-                        child: Container(
-                          color: Colors.black,
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
-                          child: SingleChildScrollView(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
+                    : SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: profileCon.listProfile.map((profileuser) {
+                            var user = profileuser;
+                            var userprofile = profileuser.company;
+                            return Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children:
-                                  profileCon.listProfile.map((profileuser) {
-                                var user = profileuser;
-                                var userprofile = profileuser.company;
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Card(
-                                      color:
-                                          const Color.fromRGBO(26, 26, 26, 1),
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
+                              children: [
+                                Card(
+                                  color: const Color.fromRGBO(26, 26, 26, 1),
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: SizedBox(
+                                    // height: 120,
+                                    width: double.infinity,
+                                    child: Column(
+                                      children: [
+                                        Center(
+                                          child: Image.asset(
+                                            'lib/image/expatlogo.png',
+                                            height: 100,
+                                            width: 200,
+                                          ),
+                                        ),
+                                        Text(
+                                          userprofile!.companyName!,
+                                          style: const TextStyle(
+                                            color: Color.fromRGBO(
+                                                114, 162, 138, 1),
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 20,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          user.picName!,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 15,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 20),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                const Text(
+                                  'Username :',
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(114, 162, 138, 1),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  user.username!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  'Alamat :',
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(114, 162, 138, 1),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  user.address!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  'Nomor Telepon :',
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(114, 162, 138, 1),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  user.picPhone!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                const SizedBox(height: 30),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ChangePassRetailPage(),
                                       ),
-                                      child: SizedBox(
-                                        // height: 120,
-                                        width: double.infinity,
-                                        child: Column(
-                                          children: [
-                                            Center(
-                                              child: Image.asset(
-                                                'lib/image/expatlogo.png',
-                                                height: 100,
-                                                width: 200,
-                                              ),
-                                            ),
-                                            Text(
-                                              userprofile!.companyName!,
-                                              style: const TextStyle(
-                                                color: Color.fromRGBO(
-                                                    114, 162, 138, 1),
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 20,
-                                              ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(
-                                              user.picName!,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 15,
-                                              ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            const SizedBox(height: 20),
-                                          ],
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromRGBO(
+                                          114, 162, 138, 1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'CHANGE PASSWORD',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 20),
-                                    const Text(
-                                      'Username :',
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(114, 162, 138, 1),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      user.username!,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    const Text(
-                                      'Alamat :',
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(114, 162, 138, 1),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      user.address!,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    const Text(
-                                      'Nomor Telepon :',
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(114, 162, 138, 1),
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      user.picPhone!,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
-                            ),
-                          ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList(),
                         ),
                       ),
               )

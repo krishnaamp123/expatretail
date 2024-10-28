@@ -71,6 +71,7 @@ export 'package:expatretail/zretail_view/order/view/orderdetail_page.dart';
 export 'package:expatretail/service/retail_service/profile_service.dart';
 export 'package:expatretail/zretail_view/profile/controller/profile_controller.dart';
 export 'package:expatretail/zretail_view/profile/view/profile_page.dart';
+export 'package:expatretail/zretail_view/profile/view/change_password.dart';
 
 //--<< SUPERMARKET APP >>--\\
 
@@ -88,3 +89,4 @@ export 'package:expatretail/widget/appbarcart_widget.dart';
 export 'package:expatretail/widget/appbar_widget.dart';
 export 'package:expatretail/widget/appbarlogo_widget.dart';
 export 'package:expatretail/widget/appbartok_widget.dart';
+export 'package:expatretail/widget/appbarprofile_widget.dart';

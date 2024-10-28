@@ -75,33 +75,6 @@ class _ComplaintRetailPageState extends State<ComplaintRetailPage> {
     }
   }
 
-  // Future<void> _pickImage() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //     if (image == null) return;
-
-  //     // Memastikan ukuran file tidak terlalu besar
-  //     final bytes = await image.readAsBytes();
-  //     const maxSizeInBytes = 2 * 1024 * 1024; // Contoh batas ukuran 2MB
-  //     if (bytes.lengthInBytes > maxSizeInBytes) {
-  //       print('File terlalu besar. Ukuran file maksimal adalah 2MB.');
-  //       return;
-  //     }
-
-  //     // Jika ukuran file sesuai, lanjutkan proses
-  //     final directory = await getApplicationDocumentsDirectory();
-  //     final name = path.basename(image.path);
-  //     final imageFile = File('${directory.path}/$name');
-  //     final newImage = await File(image.path).copy(imageFile.path);
-
-  //     setState(() {
-  //       _profileImage = newImage; // Simpan gambar yang dipilih
-  //     });
-  //   } catch (e) {
-  //     print('Error picking image: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
