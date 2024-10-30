@@ -32,6 +32,7 @@ export 'package:expatretail/a%20draft/landing/data/landing_items.dart';
 export 'package:expatretail/service/token.dart';
 export 'package:expatretail/service/auth_service.dart';
 export 'package:expatretail/authentication/view/navigation_page.dart';
+export 'package:expatretail/authentication/view/navigationsuper_page.dart';
 export 'package:expatretail/authentication/view/login_page.dart';
 export 'package:expatretail/authentication/controller/login_controller.dart';
 
@@ -75,6 +76,18 @@ export 'package:expatretail/zretail_view/profile/view/change_password.dart';
 
 //--<< SUPERMARKET APP >>--\\
 
+//PROFILE RETAIL PAGE
+export 'package:expatretail/service/supermarket_service/profileretail_service.dart';
+export 'package:expatretail/zsupermarket_view/profile_retail/controller/profileretail_controller.dart';
+export 'package:expatretail/zsupermarket_view/profile_retail/view/profileretail_page.dart';
+export 'package:expatretail/zsupermarket_view/profile_retail/view/profileretailholder_page.dart';
+
+//STOCK PAGE
+export 'package:expatretail/service/supermarket_service/stock_service.dart';
+export 'package:expatretail/zsupermarket_view/stock/controller/stock_controller.dart';
+export 'package:expatretail/zsupermarket_view/stock/view/stock_page.dart';
+export 'package:expatretail/zsupermarket_view/stock/view/stockholder_page.dart';
+
 //PROFILE PAGE
 export 'package:expatretail/zsupermarket_view/profile/controller/profile_controller.dart';
 export 'package:expatretail/zsupermarket_view/profile/view/profile_page.dart';
@@ -87,6 +100,7 @@ export 'package:expatretail/widget/textfieldcomplaint_widget.dart';
 export 'package:expatretail/widget/button_widget.dart';
 export 'package:expatretail/widget/appbarcart_widget.dart';
 export 'package:expatretail/widget/appbar_widget.dart';
-export 'package:expatretail/widget/appbarlogo_widget.dart';
+export 'package:expatretail/a%20draft/appbarlogo_widget.dart';
 export 'package:expatretail/widget/appbartok_widget.dart';
 export 'package:expatretail/widget/appbarprofile_widget.dart';
+export 'package:expatretail/widget/appbarlogout_widget.dart';

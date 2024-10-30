@@ -41,28 +41,9 @@ class LoginController {
 
   void navigateBasedOnRole(BuildContext context, String role) {
     if (role == 'retail') {
-      navigateToDashboard(context);
+      navigateToRetail(context);
     } else if (role == 'supermarket') {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => const StartSupermarket(),
-      //   ),
-      // );
-      const snackBar = SnackBar(
-        elevation: 0,
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Failure!',
-          message: 'Supermarket app still under development!',
-          contentType: ContentType.failure,
-        ),
-      );
-
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBar);
+      navigateToSupermarket(context);
     } else if (role == 'admin') {
       const snackBar = SnackBar(
         elevation: 0,
@@ -159,14 +140,14 @@ class LoginController {
     }
   }
 
-  Future<void> navigateToDashboard(BuildContext context) async {
+  Future<void> navigateToRetail(BuildContext context) async {
     const snackBar = SnackBar(
       elevation: 0,
       behavior: SnackBarBehavior.fixed,
       backgroundColor: Colors.transparent,
       content: AwesomeSnackbarContent(
         title: 'Success!',
-        message: 'Dashboard page will appear in a few moments!',
+        message: 'Retail page appear in a few moments!',
         color: Color.fromRGBO(114, 162, 138, 1),
         contentType: ContentType.success,
       ),
@@ -181,6 +162,32 @@ class LoginController {
       context,
       MaterialPageRoute(
         builder: (context) => const NavigationPage(initialIndex: 0),
+      ),
+    );
+  }
+
+  Future<void> navigateToSupermarket(BuildContext context) async {
+    const snackBar = SnackBar(
+      elevation: 0,
+      behavior: SnackBarBehavior.fixed,
+      backgroundColor: Colors.transparent,
+      content: AwesomeSnackbarContent(
+        title: 'Success!',
+        message: 'Supermarket page appear in a few moments!',
+        color: Color.fromRGBO(114, 162, 138, 1),
+        contentType: ContentType.success,
+      ),
+    );
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(snackBar);
+
+    await Future.delayed(const Duration(seconds: 2));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const NavigationSuperPage(initialIndex: 0),
       ),
     );
   }
