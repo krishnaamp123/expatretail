@@ -119,6 +119,17 @@ class _ProfileRetailPageState extends State<ProfileRetailPage> {
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
+                                          user.customerName!,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 15,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
                                           user.picName!,
                                           style: const TextStyle(
                                             color: Colors.white,

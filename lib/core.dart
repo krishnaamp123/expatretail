@@ -88,9 +88,13 @@ export 'package:expatretail/zsupermarket_view/stock/controller/stock_controller.
 export 'package:expatretail/zsupermarket_view/stock/view/stock_page.dart';
 export 'package:expatretail/zsupermarket_view/stock/view/stockholder_page.dart';
 
+//HISTORY STOCK PAGE
+export 'package:expatretail/zsupermarket_view/history_stock/view/historystock_page.dart';
+export 'package:expatretail/zsupermarket_view/history_stock/view/historystockholder_page.dart';
+export 'package:expatretail/zsupermarket_view/history_stock/view/historystockdetail_page.dart';
+
 //PROFILE PAGE
-export 'package:expatretail/zsupermarket_view/profile/controller/profile_controller.dart';
-export 'package:expatretail/zsupermarket_view/profile/view/profile_page.dart';
+export 'package:expatretail/zsupermarket_view/profile/view/profilesuper_page.dart';
 
 //WIDGET
 export 'package:expatretail/widget/text_widget.dart';

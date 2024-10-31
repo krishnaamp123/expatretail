@@ -65,10 +65,10 @@ class _NavigationPageSSupertate extends State<NavigationSuperPage> {
         widget = const ProfileRetailSuperPage();
         break;
       case 1:
-        widget = const ProfileRetailSuperPage();
+        widget = const HistoryStockPage();
         break;
       case 2:
-        widget = const ProfileRetailSuperPage();
+        widget = const ProfileSuperPage();
         break;
       default:
         widget = const ProfileRetailSuperPage();

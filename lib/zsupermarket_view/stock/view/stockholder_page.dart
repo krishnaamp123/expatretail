@@ -57,19 +57,11 @@ class StockHolderPageState extends State<StockHolderPage> {
                       itemExtent: 110,
                       itemBuilder: (BuildContext context, int index) {
                         var stock = stockCon.listStock[index];
-                        return menuCard(
+                        return stockCard(
                           stock.customer!.id!.toInt(),
                           stock.customerProduct!.id!.toInt(),
                           stock.totalQty!.toInt(),
-                          stock.totalSold!.toInt(),
-                          stock.totalLost!.toInt(),
-                          stock.totalSwitch!.toInt(),
                           stock.updatedAt.toString(),
-                          stock.customer!.company!.companyName.toString(),
-                          stock.customer!.customerName.toString(),
-                          stock.customer!.picName.toString(),
-                          stock.customer!.picPhone.toString(),
-                          stock.customer!.address.toString(),
                           stock.customerProduct!.product!.productName
                               .toString(),
                           stock.customerProduct!.product!.image.toString(),
@@ -92,19 +84,11 @@ class StockHolderPageState extends State<StockHolderPage> {
     );
   }
 
-  Widget menuCard(
+  Widget stockCard(
     int idCustomer,
     int idCustomerProduct,
     int totalQty,
-    int totalSold,
-    int totalLost,
-    int totalSwitch,
     String updatedAt,
-    String companyName,
-    String customerName,
-    String picName,
-    String picPhone,
-    String address,
     String productName,
     String image,
     String description,
@@ -161,7 +145,7 @@ class StockHolderPageState extends State<StockHolderPage> {
                         Text(
                           productName,
                           style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: 18,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0,
@@ -326,6 +310,7 @@ class StockHolderPageState extends State<StockHolderPage> {
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(snackBar);
+                    _refreshData();
                     Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
@@ -363,6 +348,7 @@ class StockHolderPageState extends State<StockHolderPage> {
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(snackBar);
+                    _refreshData();
                     Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(

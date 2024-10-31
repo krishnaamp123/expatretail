@@ -11,7 +11,7 @@ class ProfileSuperPage extends StatefulWidget {
 }
 
 class _ProfilePageSSupertate extends State<ProfileSuperPage> {
-  var profileCon = Get.put(ProfileSuperController());
+  var profileCon = Get.put(ProfileRetailController());
   bool isDataLoaded = false;
   int? userid;
 
@@ -120,6 +120,17 @@ class _ProfilePageSSupertate extends State<ProfileSuperPage> {
                                                     114, 162, 138, 1),
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 20,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              user.customerName!,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 15,
                                               ),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,

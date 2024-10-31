@@ -1,45 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
 
-class ProfileRetailHolderPage extends StatefulWidget {
-  const ProfileRetailHolderPage({
-    Key? key,
-  }) : super(key: key);
+class HistoryStockHolderPage extends StatefulWidget {
+  const HistoryStockHolderPage({super.key});
 
   @override
-  State<ProfileRetailHolderPage> createState() =>
-      _ProfileRetailHolderPageState();
+  State<HistoryStockHolderPage> createState() => _HistoryStockHolderState();
 }
 
-class _ProfileRetailHolderPageState extends State<ProfileRetailHolderPage> {
-  var profileretailCon = Get.put(ProfileRetailSuperController());
+class _HistoryStockHolderState extends State<HistoryStockHolderPage> {
+  var profileretCon = Get.put(ProfileRetailSuperController());
   bool isDataLoaded = false;
   String searchText = '';
 
   @override
   void initState() {
     super.initState();
-    _refreshData();
     _loadData();
   }
 
-  // Fungsi untuk memuat data
   void _loadData() async {
-    await profileretailCon.getProfileRetail();
+    await _refreshData();
+    await profileretCon.getProfileRetail();
     setState(() {
       isDataLoaded = true;
     });
   }
 
-  // Function to handle refreshing
   Future<void> _refreshData() async {
-    await profileretailCon.getProfileRetail();
+    await profileretCon.getProfileRetail();
     setState(() {});
   }
 
   // Function to filter the profiles
   List filterProfiles() {
-    return profileretailCon.listProfileRetail.where((profile) {
+    return profileretCon.listProfileRetail.where((profile) {
       final companyName = profile.company!.companyName.toString().toLowerCase();
       final customerName = profile.customerName.toString().toLowerCase();
       final picName = profile.picName.toString().toLowerCase();
@@ -108,35 +103,29 @@ class _ProfileRetailHolderPageState extends State<ProfileRetailHolderPage> {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  profileretailCon.isLoading.value
+                  profileretCon.isLoading.value
                       ? const SpinKitWanderingCubes(
                           color: Color.fromRGBO(114, 162, 138, 1),
                           size: 50.0,
                         )
                       : Expanded(
-                          child: Card(
-                            color: const Color.fromRGBO(26, 26, 26, 1),
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: filterProfiles().length,
-                              padding: const EdgeInsets.only(bottom: 10),
-                              itemExtent: 100,
-                              itemBuilder: (BuildContext context, int index) {
-                                var profileretail = filterProfiles()[index];
-                                return profileretailCard(
-                                  profileretail.id!.toInt(),
-                                  profileretail.company!.companyName.toString(),
-                                  profileretail.customerName.toString(),
-                                  profileretail.picName.toString(),
-                                  profileretail.picPhone.toString(),
-                                  profileretail.address.toString(),
-                                );
-                              },
-                            ),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: filterProfiles().length,
+                            padding: const EdgeInsets.only(
+                                bottom: 10, left: 15, right: 15),
+                            itemExtent: 100,
+                            itemBuilder: (BuildContext context, int index) {
+                              var profileretail = filterProfiles()[index];
+                              return profileretCard(
+                                profileretail.id!.toInt(),
+                                profileretail.company!.companyName.toString(),
+                                profileretail.customerName.toString(),
+                                profileretail.picName.toString(),
+                                profileretail.picPhone.toString(),
+                                profileretail.address.toString(),
+                              );
+                            },
                           ),
                         ),
                 ],
@@ -150,7 +139,7 @@ class _ProfileRetailHolderPageState extends State<ProfileRetailHolderPage> {
     );
   }
 
-  Widget profileretailCard(
+  Widget profileretCard(
     int idCustomer,
     String companyName,
     String customerName,
@@ -163,9 +152,13 @@ class _ProfileRetailHolderPageState extends State<ProfileRetailHolderPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => StockPage(
+            builder: (context) => HistoryStockDetailPage(
               idCustomer: idCustomer,
+              companyName: companyName,
               customerName: customerName,
+              picName: picName,
+              picPhone: picPhone,
+              address: address,
             ),
           ),
         );
@@ -181,61 +174,50 @@ class _ProfileRetailHolderPageState extends State<ProfileRetailHolderPage> {
             child: SizedBox(
               height: 90,
               width: double.infinity,
-              child: Row(
-                children: [
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          companyName,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Color.fromRGBO(114, 162, 138, 1),
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0,
-                          ),
-                          textAlign: TextAlign.left,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          customerName,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          textAlign: TextAlign.left,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          picName,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          textAlign: TextAlign.left,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      companyName,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        color: Color.fromRGBO(114, 162, 138, 1),
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0,
+                      ),
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                    Text(
+                      customerName,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      picName,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Divider(
-              height: 2,
-              thickness: 4,
-              color: Color.fromRGBO(33, 33, 33, 1),
             ),
           ),
         ],
