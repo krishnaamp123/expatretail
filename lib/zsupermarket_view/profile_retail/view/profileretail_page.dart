@@ -20,7 +20,7 @@ class ProfileRetailSuperPageState extends State<ProfileRetailSuperPage> {
       appBar: buildAppBarLogout(context, "SUPERMARKET"),
       backgroundColor: Colors.black,
       body: const SafeArea(
-        child: Expanded(child: ProfileRetailHolderPage()),
+        child: Column(children: [Expanded(child: ProfileRetailHolderPage())]),
       ),
     );
   }

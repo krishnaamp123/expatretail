@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
+import 'package:expatretail/model/supermarket_model/stock_model.dart';
 
 class HistoryStockDetailPage extends StatefulWidget {
   final int idCustomer;
@@ -37,6 +38,7 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
   // Fungsi untuk memuat data
   void _loadData() async {
     await stokCon.getStock(widget.idCustomer);
+    _flattenDetailStocks();
     setState(() {
       isDataLoaded = true;
     });
@@ -46,6 +48,21 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
   Future<void> _refreshData() async {
     await stokCon.getStock(widget.idCustomer);
     setState(() {});
+  }
+
+  // Flatten the list of detail stocks
+  List<dynamic> flattenedDetailList = StockController()
+      .listStock
+      .expand((stock) => stock.detailCustomerStocks ?? [])
+      .toList();
+
+  void _flattenDetailStocks() {
+    flattenedDetailList = [];
+    for (var stock in stokCon.listStock) {
+      if (stock.detailCustomerStocks != null) {
+        flattenedDetailList.addAll(stock.detailCustomerStocks!);
+      }
+    }
   }
 
   @override
@@ -168,7 +185,11 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: RefreshIndicator(
-              onRefresh: _refreshData,
+              onRefresh: () async {
+                await _refreshData();
+                _flattenDetailStocks(); // Refresh the flattened list
+                setState(() {});
+              },
               color: const Color.fromRGBO(114, 162, 138, 1),
               child: isDataLoaded
                   ? Obx(
@@ -179,29 +200,37 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
                             )
                           : ListView.builder(
                               shrinkWrap: true,
-                              itemCount: stokCon.listStock.length,
+                              itemCount: flattenedDetailList.length,
                               padding: const EdgeInsets.only(bottom: 10),
                               itemExtent: 110,
                               itemBuilder: (BuildContext context, int index) {
-                                var stock = stokCon.listStock[index];
-                                return detailCard(
-                                  stock.totalQty!.toInt(),
-                                  stock.totalSold!.toInt(),
-                                  stock.totalLost!.toInt(),
-                                  stock.totalSwitch!.toInt(),
-                                  stock.updatedAt.toString(),
-                                  stock.customerProduct!.product!.productName
-                                      .toString(),
-                                  stock.customerProduct!.product!.image
-                                      .toString(),
-                                  stock.customerProduct!.product!.descriprtion
-                                      .toString(),
-                                  stock.customerProduct!.product!.packaging!
-                                      .packagingName
-                                      .toString(),
-                                  stock.customerProduct!.product!.packaging!
-                                      .weight!
-                                      .toInt(),
+                                var detail = flattenedDetailList[index];
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: detailCustomerStocks?.length,
+                                  itemBuilder:
+                                      (BuildContext context, int detailIndex) {
+                                    var detail =
+                                        detailCustomerStocks![detailIndex];
+                                    return detailCard(
+                                        detail.qtyOut!.toInt(),
+                                        detail.createdAt.toString(),
+                                        detail.customerProduct!.product!
+                                            .productName
+                                            .toString(),
+                                        detail.customerProduct!.product!.image
+                                            .toString(),
+                                        detail.customerProduct!.product!
+                                            .packaging!.packagingName
+                                            .toString(),
+                                        detail.customerProduct!.product!
+                                            .packaging!.weight!
+                                            .toInt(),
+                                        detail.supermarket!.customerName
+                                            .toString(),
+                                        detail.type.toString());
+                                  },
                                 );
                               },
                             ),
@@ -221,19 +250,17 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
   }
 
   Widget detailCard(
-    int totalQty,
-    int totalSold,
-    int totalLost,
-    int totalSwitch,
-    String updatedAt,
+    int qtyOut,
+    String createdAt,
     String productName,
     String image,
-    String description,
     String packagingName,
     int weight,
+    String supermarketName,
+    String type,
   ) {
     final fullImageUrl = '$baseURL/storage/image/$image';
-    DateTime parsedDate = DateTime.parse(updatedAt);
+    DateTime parsedDate = DateTime.parse(createdAt);
     String updatedDate = DateFormat('yyyy-MM-dd HH:mm').format(parsedDate);
     return Column(
       children: [
@@ -317,7 +344,7 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
                       Row(
                         children: [
                           const Text(
-                            "Stock : ",
+                            "By : ",
                             style: const TextStyle(
                               fontSize: 15,
                               color: Colors.white,
@@ -328,7 +355,31 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
-                            "$totalQty",
+                            supermarketName,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Color.fromRGBO(114, 162, 138, 1),
+                              fontWeight: FontWeight.normal,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Text(
+                            "Out : ",
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            textAlign: TextAlign.left,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "$qtyOut",
                             style: const TextStyle(
                               fontSize: 16,
                               color: Color.fromRGBO(114, 162, 138, 1),
@@ -337,7 +388,7 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
                             textAlign: TextAlign.left,
                           ),
                           Text(
-                            " [ $updatedDate ]",
+                            "[ $type ]",
                             style: const TextStyle(
                               fontSize: 15,
                               color: Colors.white,
@@ -346,59 +397,6 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
                             textAlign: TextAlign.left,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              const Text(
-                                "Total Sold : ",
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                                textAlign: TextAlign.left,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                "$totalSold",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color.fromRGBO(114, 162, 138, 1),
-                                  fontWeight: FontWeight.normal,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Text(
-                                "Total Lost : ",
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                                textAlign: TextAlign.left,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                "$totalLost",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color.fromRGBO(114, 162, 138, 1),
-                                  fontWeight: FontWeight.normal,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ],
                           ),
                         ],
                       ),

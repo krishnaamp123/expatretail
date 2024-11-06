@@ -16,11 +16,11 @@ class _HistoryStockHolderState extends State<HistoryStockHolderPage> {
   @override
   void initState() {
     super.initState();
+    _refreshData();
     _loadData();
   }
 
   void _loadData() async {
-    await _refreshData();
     await profileretCon.getProfileRetail();
     setState(() {
       isDataLoaded = true;

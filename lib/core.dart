@@ -108,3 +108,4 @@ export 'package:expatretail/a%20draft/appbarlogo_widget.dart';
 export 'package:expatretail/widget/appbartok_widget.dart';
 export 'package:expatretail/widget/appbarprofile_widget.dart';
 export 'package:expatretail/widget/appbarlogout_widget.dart';
+export 'package:expatretail/widget/appbarstock_widget.dart';

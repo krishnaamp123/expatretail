@@ -30,12 +30,13 @@ class StockController extends GetxController implements GetxService {
   }
 
   Future<void> sendStockSold(BuildContext context, int idCustomer,
-      int idCustomerProduct, int jumlahTotal) async {
+      int idCustomerProduct, int jumlahSold, int idSupermarket) async {
     try {
       var response = await stockService.postStockSold(
         idCustomer: idCustomer,
         idCustomerProduct: idCustomerProduct,
-        soldQty: jumlahTotal,
+        soldQty: jumlahSold,
+        idSupermarket: idSupermarket,
       );
 
       print('Response status code: ${response.statusCode}');
@@ -127,12 +128,13 @@ class StockController extends GetxController implements GetxService {
   }
 
   Future<void> sendStockLost(BuildContext context, int idCustomer,
-      int idCustomerProduct, int jumlahTotal) async {
+      int idCustomerProduct, int jumlahLost, int idSupermarket) async {
     try {
       var response = await stockService.postStockLost(
         idCustomer: idCustomer,
         idCustomerProduct: idCustomerProduct,
-        lostQty: jumlahTotal,
+        lostQty: jumlahLost,
+        idSupermarket: idSupermarket,
       );
 
       print('Response status code: ${response.statusCode}');

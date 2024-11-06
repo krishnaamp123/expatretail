@@ -15,9 +15,13 @@ class HistoryStockPageState extends State<HistoryStockPage> {
       appBar: buildAppBarTok(context, "STOCK HISTORY"),
       backgroundColor: Colors.black,
       body: const SafeArea(
-        child: Expanded(
-          // Menggunakan Expanded di sini
-          child: HistoryStockHolderPage(),
+        child: Column(
+          children: [
+            Expanded(
+              // Menggunakan Expanded di sini
+              child: HistoryStockHolderPage(),
+            ),
+          ],
         ),
       ),
     );

@@ -82,7 +82,7 @@ class OrderRetailDetailPageState extends State<OrderRetailDetailPage> {
                     Row(
                       children: [
                         const TextWidget(
-                          "Created At     : ",
+                          "Order Date     : ",
                           16,
                           Colors.white,
                           FontWeight.normal,

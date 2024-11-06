@@ -2,36 +2,32 @@ class StockModel {
   int? id;
   int? idCustomer;
   int? idCustomerProduct;
-  int? totalQty;
-  int? totalSold;
-  int? totalLost;
-  int? totalSwitch;
+  int? totalStock;
+  int? totalOutstock;
   String? createdAt;
   String? updatedAt;
   Customer? customer;
   CustomerProduct? customerProduct;
+  List<DetailCustomerStocks>? detailCustomerStocks;
 
   StockModel(
       {this.id,
       this.idCustomer,
       this.idCustomerProduct,
-      this.totalQty,
-      this.totalSold,
-      this.totalLost,
-      this.totalSwitch,
+      this.totalStock,
+      this.totalOutstock,
       this.createdAt,
       this.updatedAt,
       this.customer,
-      this.customerProduct});
+      this.customerProduct,
+      this.detailCustomerStocks});
 
   StockModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     idCustomer = json['id_customer'];
     idCustomerProduct = json['id_customer_product'];
-    totalQty = json['total_qty'];
-    totalSold = json['total_sold'];
-    totalLost = json['total_lost'];
-    totalSwitch = json['total_switch'];
+    totalStock = json['total_stock'];
+    totalOutstock = json['total_outstock'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     customer = json['customer'] != null
@@ -40,6 +36,12 @@ class StockModel {
     customerProduct = json['customer_product'] != null
         ? new CustomerProduct.fromJson(json['customer_product'])
         : null;
+    if (json['detail_customer_stocks'] != null) {
+      detailCustomerStocks = <DetailCustomerStocks>[];
+      json['detail_customer_stocks'].forEach((v) {
+        detailCustomerStocks!.add(new DetailCustomerStocks.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -47,10 +49,8 @@ class StockModel {
     data['id'] = this.id;
     data['id_customer'] = this.idCustomer;
     data['id_customer_product'] = this.idCustomerProduct;
-    data['total_qty'] = this.totalQty;
-    data['total_sold'] = this.totalSold;
-    data['total_lost'] = this.totalLost;
-    data['total_switch'] = this.totalSwitch;
+    data['total_stock'] = this.totalStock;
+    data['total_outstock'] = this.totalOutstock;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     if (this.customer != null) {
@@ -58,6 +58,10 @@ class StockModel {
     }
     if (this.customerProduct != null) {
       data['customer_product'] = this.customerProduct!.toJson();
+    }
+    if (this.detailCustomerStocks != null) {
+      data['detail_customer_stocks'] =
+          this.detailCustomerStocks!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -282,6 +286,67 @@ class Packaging {
     data['weight'] = this.weight;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
+class DetailCustomerStocks {
+  int? id;
+  int? idCustomerStock;
+  int? idSupermarket;
+  int? idCustomerProduct;
+  int? qtyOut;
+  String? type;
+  String? createdAt;
+  String? updatedAt;
+  Customer? supermarket;
+  CustomerProduct? customerProduct;
+
+  DetailCustomerStocks(
+      {this.id,
+      this.idCustomerStock,
+      this.idSupermarket,
+      this.idCustomerProduct,
+      this.qtyOut,
+      this.type,
+      this.createdAt,
+      this.updatedAt,
+      this.supermarket,
+      this.customerProduct});
+
+  DetailCustomerStocks.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    idCustomerStock = json['id_customer_stock'];
+    idSupermarket = json['id_supermarket'];
+    idCustomerProduct = json['id_customer_product'];
+    qtyOut = json['qty_out'];
+    type = json['type'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    supermarket = json['supermarket'] != null
+        ? new Customer.fromJson(json['supermarket'])
+        : null;
+    customerProduct = json['customer_product'] != null
+        ? new CustomerProduct.fromJson(json['customer_product'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['id_customer_stock'] = this.idCustomerStock;
+    data['id_supermarket'] = this.idSupermarket;
+    data['id_customer_product'] = this.idCustomerProduct;
+    data['qty_out'] = this.qtyOut;
+    data['type'] = this.type;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    if (this.supermarket != null) {
+      data['supermarket'] = this.supermarket!.toJson();
+    }
+    if (this.customerProduct != null) {
+      data['customer_product'] = this.customerProduct!.toJson();
+    }
     return data;
   }
 }

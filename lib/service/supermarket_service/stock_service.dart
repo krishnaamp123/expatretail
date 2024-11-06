@@ -35,6 +35,7 @@ class StockService {
     required int idCustomer,
     required int idCustomerProduct,
     required int soldQty,
+    required int idSupermarket,
   }) async {
     var token = await getToken();
     if (token.isEmpty) {
@@ -51,6 +52,7 @@ class StockService {
       'id_customer': idCustomer,
       'id_customer_product': idCustomerProduct,
       'sold_qty': soldQty,
+      'id_supermarket': idSupermarket,
     });
 
     var url = Uri.parse('$baseURL/customerstock/sold');
@@ -70,6 +72,7 @@ class StockService {
     required int idCustomer,
     required int idCustomerProduct,
     required int lostQty,
+    required int idSupermarket,
   }) async {
     var token = await getToken();
     if (token.isEmpty) {
@@ -86,6 +89,7 @@ class StockService {
       'id_customer': idCustomer,
       'id_customer_product': idCustomerProduct,
       'lost_qty': lostQty,
+      'id_supermarket': idSupermarket,
     });
 
     var url = Uri.parse('$baseURL/customerstock/lost');

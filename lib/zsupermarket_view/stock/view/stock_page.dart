@@ -23,7 +23,7 @@ class _StockPageState extends State<StockPage> {
     int idCustomer = widget.idCustomer;
     String customerName = widget.customerName;
     return Scaffold(
-      appBar: buildAppBar(context, "STOCK"),
+      appBar: buildAppBarStock(context, "STOCK"),
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(children: [
