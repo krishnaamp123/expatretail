@@ -196,16 +196,18 @@ class StockHolderPageState extends State<StockHolderPage> {
                         ),
                         Row(
                           children: [
-                            Text(
-                              packagingName,
-                              style: const TextStyle(
-                                fontSize: 15,
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
+                            Expanded(
+                              child: Text(
+                                packagingName,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                                textAlign: TextAlign.left,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              textAlign: TextAlign.left,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               " $weight g",

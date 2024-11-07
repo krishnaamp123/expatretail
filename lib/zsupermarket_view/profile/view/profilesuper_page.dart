@@ -121,7 +121,8 @@ class _ProfilePageSSupertate extends State<ProfileSuperPage> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 20,
                                               ),
-                                              maxLines: 1,
+                                              textAlign: TextAlign.center,
+                                              maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             const SizedBox(height: 5),
@@ -132,7 +133,8 @@ class _ProfilePageSSupertate extends State<ProfileSuperPage> {
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 15,
                                               ),
-                                              maxLines: 1,
+                                              textAlign: TextAlign.center,
+                                              maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             const SizedBox(height: 5),
@@ -153,7 +155,7 @@ class _ProfilePageSSupertate extends State<ProfileSuperPage> {
                                     ),
                                     const SizedBox(height: 20),
                                     const Text(
-                                      'Email :',
+                                      'Username :',
                                       style: TextStyle(
                                         color: Color.fromRGBO(114, 162, 138, 1),
                                         fontSize: 15,
@@ -179,6 +181,8 @@ class _ProfilePageSSupertate extends State<ProfileSuperPage> {
                                         fontWeight: FontWeight.normal,
                                       ),
                                       textAlign: TextAlign.left,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: 4),
                                     Text(

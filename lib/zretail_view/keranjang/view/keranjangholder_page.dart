@@ -240,37 +240,40 @@ class _KeranjangRetailHolderPageState extends State<KeranjangRetailHolderPage> {
                 const SizedBox(width: 15),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 20),
+                    padding: const EdgeInsets.only(right: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              productname,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0,
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                productname,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0,
+                                ),
+                                textAlign: TextAlign.left,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              textAlign: TextAlign.left,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              formatteditemprice,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Color.fromRGBO(114, 162, 138, 1),
-                                fontWeight: FontWeight.normal,
+                              Text(
+                                formatteditemprice,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Color.fromRGBO(114, 162, 138, 1),
+                                  fontWeight: FontWeight.normal,
+                                ),
+                                textAlign: TextAlign.left,
                               ),
-                              textAlign: TextAlign.left,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
+                        const SizedBox(width: 5),
                         InputQty.int(
                           initVal: qty,
                           qtyFormProps: const QtyFormProps(

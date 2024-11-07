@@ -102,13 +102,18 @@ class _ComplaintRetailHistoryPageState
                   const SizedBox(
                     width: 5,
                   ),
-                  TextWidget(
-                    productionCode,
-                    15,
-                    const Color.fromRGBO(114, 162, 138, 1),
-                    FontWeight.normal,
-                    letterSpace: 0,
-                    textAlign: TextAlign.left,
+                  Expanded(
+                    child: Text(
+                      productionCode,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Color.fromRGBO(114, 162, 138, 1),
+                        fontWeight: FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.left,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),

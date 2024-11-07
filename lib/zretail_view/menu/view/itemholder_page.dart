@@ -163,16 +163,18 @@ class _ItemRetailHolderPageState extends State<ItemRetailHolderPage> {
                         ),
                         Row(
                           children: [
-                            Text(
-                              packagingname,
-                              style: const TextStyle(
-                                fontSize: 15,
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
+                            Expanded(
+                              child: Text(
+                                packagingname,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                                textAlign: TextAlign.left,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              textAlign: TextAlign.left,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               " $weight g",
@@ -185,9 +187,9 @@ class _ItemRetailHolderPageState extends State<ItemRetailHolderPage> {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
+                            const SizedBox(width: 5),
                           ],
                         ),
-                        // const SizedBox(height: 5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

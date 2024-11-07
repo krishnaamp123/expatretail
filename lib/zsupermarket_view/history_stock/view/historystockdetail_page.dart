@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:expatretail/core.dart';
-import 'package:expatretail/model/supermarket_model/stock_model.dart';
 
 class HistoryStockDetailPage extends StatefulWidget {
   final int idCustomer;
@@ -26,6 +25,7 @@ class HistoryStockDetailPage extends StatefulWidget {
 
 class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
   var stokCon = Get.put(StockController());
+  TextEditingController dateController = TextEditingController();
   bool isDataLoaded = false;
 
   @override
@@ -51,18 +51,31 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
   }
 
   // Flatten the list of detail stocks
-  List<dynamic> flattenedDetailList = StockController()
-      .listStock
-      .expand((stock) => stock.detailCustomerStocks ?? [])
-      .toList();
+  List<dynamic> flattenedDetailList = [];
 
   void _flattenDetailStocks() {
-    flattenedDetailList = [];
+    flattenedDetailList.clear(); // Ensure it's emptied before adding new items.
     for (var stock in stokCon.listStock) {
       if (stock.detailCustomerStocks != null) {
         flattenedDetailList.addAll(stock.detailCustomerStocks!);
       }
     }
+    // Urutkan flattenedDetailList berdasarkan tanggal terbaru
+    flattenedDetailList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+  }
+
+  void _filterByDate(String dateTime) {
+    setState(() {
+      flattenedDetailList = stokCon.listStock
+          .expand((stock) => stock.detailCustomerStocks ?? [])
+          .where((detail) {
+        DateTime createdAtDateTime = DateTime.parse(detail.createdAt);
+        String formattedDate =
+            DateFormat('yyyy-MM-dd HH:mm').format(createdAtDateTime);
+
+        return formattedDate.startsWith(dateTime);
+      }).toList();
+    });
   }
 
   @override
@@ -75,7 +88,12 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
     return Scaffold(
       appBar: buildAppBar(context, "STOCK DETAIL"),
       backgroundColor: Colors.black,
-      body: SingleChildScrollView(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await _refreshData();
+          _flattenDetailStocks();
+          setState(() {});
+        },
         child: Column(children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -113,12 +131,14 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
                       FontWeight.normal,
                       letterSpace: 0,
                     ),
-                    TextWidget(
-                      picName,
-                      16,
-                      Colors.white,
-                      FontWeight.normal,
-                      letterSpace: 0,
+                    Expanded(
+                      child: TextWidget(
+                        picName,
+                        16,
+                        Colors.white,
+                        FontWeight.normal,
+                        letterSpace: 0,
+                      ),
                     ),
                   ],
                 ),
@@ -143,7 +163,7 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
               ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Card(
@@ -164,7 +184,7 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       TextWidget(
-                        "LIST ITEM",
+                        "RECENT OUTSTOCK",
                         18,
                         Colors.white,
                         FontWeight.bold,
@@ -176,75 +196,109 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
               ),
             ),
           ),
-
-          const SizedBox(height: 10),
-          Card(
-            color: const Color.fromRGBO(26, 26, 26, 1),
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await _refreshData();
-                _flattenDetailStocks(); // Refresh the flattened list
-                setState(() {});
+          const SizedBox(height: 5),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextField(
+              controller: dateController,
+              onChanged: (value) {
+                _filterByDate(value);
               },
-              color: const Color.fromRGBO(114, 162, 138, 1),
-              child: isDataLoaded
-                  ? Obx(
-                      () => stokCon.isLoading.value
-                          ? const SpinKitWanderingCubes(
-                              color: Color.fromRGBO(114, 162, 138, 1),
-                              size: 50.0,
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: flattenedDetailList.length,
-                              padding: const EdgeInsets.only(bottom: 10),
-                              itemExtent: 110,
-                              itemBuilder: (BuildContext context, int index) {
-                                var detail = flattenedDetailList[index];
-                                return ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: detailCustomerStocks?.length,
-                                  itemBuilder:
-                                      (BuildContext context, int detailIndex) {
-                                    var detail =
-                                        detailCustomerStocks![detailIndex];
-                                    return detailCard(
-                                        detail.qtyOut!.toInt(),
-                                        detail.createdAt.toString(),
-                                        detail.customerProduct!.product!
-                                            .productName
-                                            .toString(),
-                                        detail.customerProduct!.product!.image
-                                            .toString(),
-                                        detail.customerProduct!.product!
-                                            .packaging!.packagingName
-                                            .toString(),
-                                        detail.customerProduct!.product!
-                                            .packaging!.weight!
-                                            .toInt(),
-                                        detail.supermarket!.customerName
-                                            .toString(),
-                                        detail.type.toString());
-                                  },
-                                );
-                              },
-                            ),
-                    )
-                  : const Center(
-                      child: SpinKitWanderingCubes(
-                      color: Color.fromRGBO(114, 162, 138, 1),
-                      size: 50.0,
-                    )),
+              style: const TextStyle(
+                color: Colors.white, // Text color
+                fontSize: 16, // Text size
+              ),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color.fromRGBO(26, 26, 26, 1),
+                hintText: "Search Date",
+                hintStyle: const TextStyle(
+                  color: Color.fromRGBO(114, 162, 138, 1),
+                  fontSize: 16, // Hint text size
+                ),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Color.fromRGBO(114, 162, 138, 1), // Icon color
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide.none, // Removes the border
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: const BorderSide(
+                    color: Color.fromRGBO(26, 26, 26, 1),
+                    width: 1.5,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: const BorderSide(
+                    color: Color.fromRGBO(
+                        114, 162, 138, 1), // Border color when focused
+                    width: 2,
+                  ),
+                ),
+              ),
             ),
           ),
-
-          //Item Holder
+          const SizedBox(height: 10),
+          Expanded(
+            child: isDataLoaded
+                ? Obx(
+                    () => stokCon.isLoading.value
+                        ? const SpinKitWanderingCubes(
+                            color: Color.fromRGBO(114, 162, 138, 1),
+                            size: 50.0,
+                          )
+                        : Card(
+                            color: const Color.fromRGBO(26, 26, 26, 1),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: flattenedDetailList.length,
+                                padding: const EdgeInsets.only(bottom: 10),
+                                itemExtent: 120,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var detail = flattenedDetailList[index];
+                                  return detailCard(
+                                      detail.qtyOut!.toInt(),
+                                      detail.createdAt.toString(),
+                                      detail
+                                          .customerProduct!.product!.productName
+                                          .toString(),
+                                      detail.customerProduct!.product!.image
+                                          .toString(),
+                                      detail.customerProduct!.product!
+                                          .packaging!.packagingName
+                                          .toString(),
+                                      detail.customerProduct!.product!
+                                          .packaging!.weight!
+                                          .toInt(),
+                                      detail.supermarket!.customerName
+                                          .toString(),
+                                      detail.type.toString());
+                                },
+                              ),
+                            ),
+                          ),
+                  )
+                : const Center(
+                    child: SpinKitWanderingCubes(
+                    color: Color.fromRGBO(114, 162, 138, 1),
+                    size: 50.0,
+                  )),
+          ),
         ]),
+
+        //Item Holder
       ),
     );
   }
@@ -259,9 +313,10 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
     String supermarketName,
     String type,
   ) {
+    Color typeColor = _getTypeColor(type);
     final fullImageUrl = '$baseURL/storage/image/$image';
     DateTime parsedDate = DateTime.parse(createdAt);
-    String updatedDate = DateFormat('yyyy-MM-dd HH:mm').format(parsedDate);
+    String createdDate = DateFormat('yyyy-MM-dd HH:mm').format(parsedDate);
     return Column(
       children: [
         Card(
@@ -271,7 +326,7 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: SizedBox(
-            height: 100,
+            height: 110,
             width: double.infinity,
             child: Row(
               children: [
@@ -317,16 +372,18 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
                       ),
                       Row(
                         children: [
-                          Text(
-                            packagingName,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
+                          Expanded(
+                            child: Text(
+                              packagingName,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                              ),
+                              textAlign: TextAlign.left,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            textAlign: TextAlign.left,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             " $weight g",
@@ -351,19 +408,32 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
                               fontWeight: FontWeight.normal,
                             ),
                             textAlign: TextAlign.left,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                          Text(
-                            supermarketName,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Color.fromRGBO(114, 162, 138, 1),
-                              fontWeight: FontWeight.normal,
+                          Expanded(
+                            child: Text(
+                              supermarketName,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Color.fromRGBO(114, 162, 138, 1),
+                                fontWeight: FontWeight.normal,
+                              ),
+                              textAlign: TextAlign.left,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            textAlign: TextAlign.left,
                           ),
                         ],
+                      ),
+                      Text(
+                        createdDate,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        textAlign: TextAlign.left,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       Row(
                         children: [
@@ -375,23 +445,30 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
                               fontWeight: FontWeight.normal,
                             ),
                             textAlign: TextAlign.left,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(
                             "$qtyOut",
                             style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               color: Color.fromRGBO(114, 162, 138, 1),
                               fontWeight: FontWeight.normal,
                             ),
                             textAlign: TextAlign.left,
                           ),
-                          Text(
-                            "[ $type ]",
-                            style: const TextStyle(
+                          const Text(
+                            " | ",
+                            style: TextStyle(
                               fontSize: 15,
                               color: Colors.white,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          Text(
+                            type,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: typeColor,
                               fontWeight: FontWeight.normal,
                             ),
                             textAlign: TextAlign.left,
@@ -420,11 +497,11 @@ class HistoryStockDetailPageState extends State<HistoryStockDetailPage> {
     );
   }
 
-  Color _getStatusColor(String status) {
-    switch (status) {
-      case 'unconfirmed':
+  Color _getTypeColor(String type) {
+    switch (type) {
+      case 'lost':
         return Colors.orange;
-      case 'confirmed':
+      case 'sold':
         return const Color.fromRGBO(114, 162, 138, 1);
       default:
         return const Color.fromRGBO(26, 26, 26, 1);

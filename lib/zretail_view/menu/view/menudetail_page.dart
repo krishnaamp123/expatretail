@@ -105,7 +105,7 @@ class _MenuRetailDetailPageState extends State<MenuRetailDetailPage> {
                         letterSpacing: 0,
                       ),
                       textAlign: TextAlign.left,
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(

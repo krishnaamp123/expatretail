@@ -120,22 +120,26 @@ class _ProfileRetailHolderPageState extends State<ProfileRetailHolderPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: filterProfiles().length,
-                              padding: const EdgeInsets.only(bottom: 10),
-                              itemExtent: 100,
-                              itemBuilder: (BuildContext context, int index) {
-                                var profileretail = filterProfiles()[index];
-                                return profileretailCard(
-                                  profileretail.id!.toInt(),
-                                  profileretail.company!.companyName.toString(),
-                                  profileretail.customerName.toString(),
-                                  profileretail.picName.toString(),
-                                  profileretail.picPhone.toString(),
-                                  profileretail.address.toString(),
-                                );
-                              },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: filterProfiles().length,
+                                padding: const EdgeInsets.only(bottom: 10),
+                                itemExtent: 100,
+                                itemBuilder: (BuildContext context, int index) {
+                                  var profileretail = filterProfiles()[index];
+                                  return profileretailCard(
+                                    profileretail.id!.toInt(),
+                                    profileretail.company!.companyName
+                                        .toString(),
+                                    profileretail.customerName.toString(),
+                                    profileretail.picName.toString(),
+                                    profileretail.picPhone.toString(),
+                                    profileretail.address.toString(),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),
